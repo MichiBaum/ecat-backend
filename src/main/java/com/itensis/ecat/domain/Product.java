@@ -15,7 +15,7 @@ public class Product extends AbstractEntity{
 	@Column(nullable = false)
 	private String name;
 
-	@Column(nullable = false, name = "article_number")
+	@Column(nullable = false, name = "article_number", length = 18)
 	private String articleNr;
 
 	@Column(nullable = false)
