@@ -90,6 +90,38 @@
 				</plugins>
 			</build>
 		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<environment-resources>${basedir}/src/main/resources/environments/test</environment-resources>
+				<tomcat-dependency-scope>provided</tomcat-dependency-scope>
+				<war-filename>ecat</war-filename>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>prod</id>
+			<properties>
+				<environment-resources>${basedir}/src/main/resources/environments/prod</environment-resources>
+				<tomcat-dependency-scope>provided</tomcat-dependency-scope>
+				<war-filename>ecat</war-filename>
+			</properties>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 
 	<build>
