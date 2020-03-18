@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		com.itensis.ecat.domain.User user = userRepository.findByUsername(username)
+		com.itensis.ecat.domain.User user = userRepository.findByName(username)
 				.orElseThrow(() -> new UsernameNotFoundException(username));
 
 		List<GrantedAuthority> authorities = user.getPermissions().stream()
