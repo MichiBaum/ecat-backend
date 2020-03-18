@@ -28,11 +28,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().authorizeRequests() //TODO add open for all endpoints
-				//Promotionendpoints
+				//Promotion endpoints
 				.antMatchers(HttpMethod.GET,"/api/promotions/{\\d+}").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/promotions").permitAll()
-				//Productendpoints
+				//Product endpoints
 				.antMatchers(HttpMethod.GET,"/api/products/{\\d+}").permitAll()
+				//User endpoints
+				.antMatchers(HttpMethod.GET, "/api/users").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(), userRepository, bCryptPasswordEncoder))
