@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/api/promotions/{\\d+}").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/promotions").permitAll()
 				//Productendpoints
-				.antMatchers(HttpMethod.GET,"/api/product/{\\d+}").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/products/{\\d+}").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(), userRepository, bCryptPasswordEncoder))

@@ -17,7 +17,7 @@ public class ProductRestController {
 	private final ProductConverter productCoonverter;
 	private final ProductService productService;
 
-	@RequestMapping(value = "/api/product/{product}", method = RequestMethod.GET)
+	@RequestMapping(value = "/api/products/{product}", method = RequestMethod.GET)
 	public ReturnProductDto getProduct(@PathVariable Product product){
 		return productCoonverter.toDto(product);
 	}
