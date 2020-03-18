@@ -28,6 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().authorizeRequests() //TODO add open for all endpoints
+				.antMatchers(HttpMethod.GET,"/api/promotions/{\\d+}").permitAll()
 				.antMatchers(HttpMethod.GET,"/api/promotions").permitAll()
 				.anyRequest().authenticated()
 				.and()

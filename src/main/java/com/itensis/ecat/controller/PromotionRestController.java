@@ -1,9 +1,11 @@
 package com.itensis.ecat.controller;
 
 import com.itensis.ecat.converter.PromotionConverter;
+import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.PromotionDto;
 import com.itensis.ecat.services.PromotionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +25,11 @@ public class PromotionRestController {
 		return promotionService.getAll().stream()
 				.map(promotionConverter::toDto)
 				.collect(Collectors.toList());
+	}
+
+	@RequestMapping(value = "/api/promotions/{promotion}", method = RequestMethod.GET)
+	public PromotionDto getPromotion(@PathVariable Promotion promotion){
+		return promotionConverter.toDto(promotion);
 	}
 
 }

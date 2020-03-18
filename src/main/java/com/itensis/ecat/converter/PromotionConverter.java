@@ -9,6 +9,7 @@ public class PromotionConverter {
 
 	public PromotionDto toDto(Promotion promotion) {
 		return new PromotionDto(
+				promotion.getId(),
 				promotion.getTitle(),
 				promotion.getDescription(),
 				promotion.getStartDate(),
