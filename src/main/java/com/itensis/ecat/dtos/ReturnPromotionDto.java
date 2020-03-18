@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PromotionDto {
+public class ReturnPromotionDto {
 	private Long id;
 	private String title;
 	private String description;
