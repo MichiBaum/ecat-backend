@@ -34,9 +34,15 @@ public class InitDB {
 	private void initialize(){
 		if(initialize){
 			List<Permission> permissions = initPermissions();
-			User admin = initUser(permissions);
+			initUser(permissions);
 			initializeProducts();
+			initPromotion();
 		}
+	}
+
+	private void initPromotion() {
+		Long nowMilis = new Date().getTime();
+		promotionRepository.save(new Promotion("Promotion title", "Promotion description", nowMilis, nowMilis + 604800000L, nowMilis));
 	}
 
 	private void initializeProducts() {
