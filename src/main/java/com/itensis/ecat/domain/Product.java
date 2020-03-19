@@ -1,5 +1,6 @@
 package com.itensis.ecat.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@AllArgsConstructor
 @Table(name = "PRODUCT")
 public class Product extends AbstractEntity{
 

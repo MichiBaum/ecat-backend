@@ -1,5 +1,6 @@
 package com.itensis.ecat.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,6 +10,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@AllArgsConstructor
 @Table(name = "LOGIN_USER")
 public class User extends AbstractEntity{
 
