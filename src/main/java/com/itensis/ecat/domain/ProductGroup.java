@@ -3,6 +3,7 @@ package com.itensis.ecat.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "PRODUCT_GROUP")
 public class ProductGroup extends AbstractEntity {
 

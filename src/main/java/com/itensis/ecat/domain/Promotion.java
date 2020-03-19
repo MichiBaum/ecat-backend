@@ -3,6 +3,7 @@ package com.itensis.ecat.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "PROMOTION")
 public class Promotion extends AbstractEntity {
 

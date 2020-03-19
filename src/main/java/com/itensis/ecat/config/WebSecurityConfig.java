@@ -35,6 +35,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/api/products/{\\d+}").permitAll()
 				//User endpoints
 				.antMatchers(HttpMethod.GET, "/api/users").permitAll()
+				//ProductGroup endpoints
+				.antMatchers(HttpMethod.GET, "/api/productsgroups").permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(), userRepository, bCryptPasswordEncoder))

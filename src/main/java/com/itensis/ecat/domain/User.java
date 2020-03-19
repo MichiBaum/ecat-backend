@@ -3,6 +3,7 @@ package com.itensis.ecat.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "LOGIN_USER")
 public class User extends AbstractEntity{
 
@@ -25,9 +27,5 @@ public class User extends AbstractEntity{
 
 	@Column(nullable = false, name = "CREATION_DATE")
 	private Long creationDate;
-
-	protected User() {
-		this.permissions = null;
-	}
 
 }

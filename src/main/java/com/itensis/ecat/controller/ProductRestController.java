@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProductRestController {
 
-	private final ProductConverter productCoonverter;
+	private final ProductConverter productConverter;
 	private final ProductService productService;
 
 	@RequestMapping(value = "/api/products/{product}", method = RequestMethod.GET)
 	public ReturnProductDto getProduct(@PathVariable Product product){
-		return productCoonverter.toDto(product);
+		return productConverter.toDto(product);
 	}
 
 }
