@@ -4,6 +4,8 @@ import com.itensis.ecat.converter.ProductConverter;
 import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.services.ProductService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Api(value = "Product Endpoints")
 public class ProductRestController {
 
 	private final ProductConverter productConverter;
 	private final ProductService productService;
 
-	@RequestMapping(value = "/api/products/{product}", method = RequestMethod.GET)
-	public ReturnProductDto getProduct(@PathVariable Product product){
+	@ApiOperation(value = "GET the Product with the specific ID")
+	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.GET)
+	public ReturnProductDto getProduct(@PathVariable(value = "id") Product product){
 		return productConverter.toDto(product);
 	}
 
