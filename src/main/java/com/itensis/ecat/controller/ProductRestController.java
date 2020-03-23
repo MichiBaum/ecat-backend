@@ -31,7 +31,7 @@ public class ProductRestController {
 	@ApiOperation(value = "DELETE the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.DELETE)
 	public void deleteProduct(@PathVariable(value = "id") Product product){
-		productService.delete(product.getId());
+		productService.delete(product);
 	}
 
 }
