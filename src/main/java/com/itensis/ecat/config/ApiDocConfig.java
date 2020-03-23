@@ -1,4 +1,4 @@
-package com.itensis.ecat.swagger2;
+package com.itensis.ecat.config;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @ConditionalOnProperty(prefix = "swagger2", name = "enabled")
-public class Swagger2Config {
+public class ApiDocConfig {
 
 	@Bean
 	@ConditionalOnProperty(prefix = "swagger2", name = "enabled")
