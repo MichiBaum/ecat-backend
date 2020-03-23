@@ -33,6 +33,7 @@ public class Product extends AbstractEntity{
 	private Long creationDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PRODUCT_FAMILY")
 	private ProductFamily productFamily;
 
 	public Product(String name, String articleNr, String pictureName, String description, Double price, Long creationDate, ProductFamily productFamily){

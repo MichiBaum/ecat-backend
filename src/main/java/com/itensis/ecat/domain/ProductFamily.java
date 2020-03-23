@@ -19,10 +19,13 @@ public class ProductFamily extends AbstractEntity{
 
 	@OneToMany(
 			fetch = FetchType.LAZY,
-			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+			cascade= {CascadeType.ALL},
+			mappedBy = "id"
+	)
 	private List<Product> products;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PRODUCT_CLASS")
 	private ProductClass productClass;
 
 	public ProductFamily(String name, List<Product> products, ProductClass productClass){

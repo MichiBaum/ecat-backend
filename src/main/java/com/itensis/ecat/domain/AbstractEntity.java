@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 
 /**
@@ -24,7 +21,8 @@ class AbstractEntity{
 
 	@Id
 	@JsonIgnore
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ID", unique = true, nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	AbstractEntity() {

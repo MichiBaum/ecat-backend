@@ -21,7 +21,9 @@ public class ProductGroup extends AbstractEntity {
 
 	@OneToMany(
 			fetch = FetchType.LAZY,
-			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})
+			cascade= {CascadeType.ALL},
+			mappedBy = "id"
+	)
 	private List<ProductClass> productClasses;
 
 }
