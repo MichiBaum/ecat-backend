@@ -1,12 +1,14 @@
 package com.itensis.ecat.controller;
 
 import com.itensis.ecat.converter.PromotionConverter;
+import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
 import com.itensis.ecat.services.PromotionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,6 +37,13 @@ public class PromotionRestController {
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.GET)
 	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Promotion promotion){
 		return promotionConverter.toDto(promotion);
+	}
+
+	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@ApiOperation(value = "DELETE the Promotion with the specific ID")
+	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
+	public void deleteProduct(@PathVariable(value = "id") Promotion promotion){
+		promotionService.delete(promotion);
 	}
 
 }

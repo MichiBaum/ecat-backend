@@ -16,4 +16,8 @@ public class PromotionService {
 	public List<Promotion> getAll() {
 		return promotionRepository.findAll();
 	}
+
+	public void delete(Promotion promotion) {
+		promotionRepository.delete(promotion);
+	}
 }
