@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.itensis.ecat.utilities.OptionalUtilities.ifPresentElseThrow;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +39,8 @@ class UserRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "DELETE the user with the specific ID")
 	@RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
-	public void deleteProduct(@PathVariable(value = "id") User user){
-		userService.delete(user);
+	public void deleteProduct(@PathVariable(value = "id") Optional<User> user){
+		userService.delete(ifPresentElseThrow(user));
 	}
 
 }

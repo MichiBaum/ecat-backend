@@ -1,7 +1,6 @@
 package com.itensis.ecat.controller;
 
 import com.itensis.ecat.converter.PromotionConverter;
-import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
 import com.itensis.ecat.services.PromotionService;
@@ -14,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.itensis.ecat.utilities.OptionalUtilities.ifPresentElseThrow;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,15 +38,15 @@ public class PromotionRestController {
 
 	@ApiOperation(value = "GET the Promotions with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.GET)
-	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Promotion promotion){
-		return promotionConverter.toDto(promotion);
+	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Optional<Promotion> promotion){
+		return promotionConverter.toDto(ifPresentElseThrow(promotion));
 	}
 
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "DELETE the Promotion with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
-	public void deleteProduct(@PathVariable(value = "id") Promotion promotion){
-		promotionService.delete(promotion);
+	public void deleteProduct(@PathVariable(value = "id") Optional<Promotion> promotion){
+		promotionService.delete(ifPresentElseThrow(promotion));
 	}
 
 }
