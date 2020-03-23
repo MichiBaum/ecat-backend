@@ -1,19 +1,14 @@
 package com.itensis.ecat.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "PRODUCT")
 public class Product extends AbstractEntity{
@@ -36,5 +31,18 @@ public class Product extends AbstractEntity{
 
 	@Column(nullable = false, name = "CREATION_DATE")
 	private Long creationDate;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ProductFamily productFamily;
+
+	public Product(String name, String articleNr, String pictureName, String description, Double price, Long creationDate, ProductFamily productFamily){
+		this.name = name;
+		this.articleNr = articleNr;
+		this.pictureName = pictureName;
+		this.description = description;
+		this.price = price;
+		this.creationDate = creationDate;
+		this.productFamily = productFamily;
+	}
 
 }

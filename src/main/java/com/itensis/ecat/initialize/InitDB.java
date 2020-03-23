@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -42,24 +43,24 @@ public class InitDB {
 
 	private void initPromotion() {
 		Long nowMilis = new Date().getTime();
-		promotionRepository.save(new Promotion("Promotion title", "Promotion description", nowMilis, nowMilis + 604800000L, nowMilis));
+		promotionRepository.saveAndFlush(new Promotion("Promotion title", "Promotion description", nowMilis, nowMilis + 604800000L, nowMilis));
 	}
 
 	private void initializeProducts() {
 		String imageName = CreateImage.createImage(imagePath);
-		Product product = productRepository.save(new Product("Schraube XYZ", "1212090909 0990974", imageName, "This is a Descripption", 12.50, new Date().getTime()));
-		ProductFamily productFamily = productFamilyRepository.save(new ProductFamily("Dorks", List.of(product)));
-		ProductClass productClass = productClassRepository.save(new ProductClass("Schrauben", List.of(productFamily)));
-		ProductGroup productGroup = productGroupRepository.save(new ProductGroup("Befestigungsmaterialien", List.of(productClass)));
+		ProductGroup productGroup = productGroupRepository.saveAndFlush(new ProductGroup("Befestigungsmaterialien", Collections.emptyList()));
+		ProductClass productClass = productClassRepository.saveAndFlush(new ProductClass("Schrauben", Collections.emptyList(), productGroup));
+		ProductFamily productFamily = productFamilyRepository.saveAndFlush(new ProductFamily("Dorks", Collections.emptyList(), productClass));
+		Product product = productRepository.saveAndFlush(new Product("Schraube XYZ", "1212090909 0990974", imageName, "This is a Descripption", 12.50, new Date().getTime(), productFamily));
 	}
 
 	private User initUser(List<Permission> permissions) {
-		return userRepository.save(new User("admin", bCryptPasswordEncoder.encode("admin"), permissions, new Date().getTime()));
+		return userRepository.saveAndFlush(new User("admin", bCryptPasswordEncoder.encode("admin"), permissions, new Date().getTime()));
 	}
 
 	private List<Permission> initPermissions() {
-		Permission permission1 = permissionRepository.save(new Permission(PermissionName.ADMINISTRATE));
-		Permission permission2 = permissionRepository.save(new Permission(PermissionName.ADMINISTRATE_ADMINS));
+		Permission permission1 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE));
+		Permission permission2 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE_ADMINS));
 		return List.of(permission1, permission2);
 	}
 
