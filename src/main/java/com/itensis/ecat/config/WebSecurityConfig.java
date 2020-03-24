@@ -1,10 +1,13 @@
 package com.itensis.ecat.config;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
+import com.itensis.ecat.annotation.AnnotationSearcher;
 import com.itensis.ecat.repository.UserRepository;
 import com.itensis.ecat.security.JWTAuthenticationFilter;
 import com.itensis.ecat.security.JWTAuthorizationFilter;
 import com.itensis.ecat.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,11 +19,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 @RequiredArgsConstructor
+@Slf4j
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserDetailsServiceImpl userDetailsService;
@@ -32,18 +43,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().authorizeRequests() //TODO add open for all endpoints
+		List<String> endpoints = getAllPublicEndpoints();
+		List<String> antEndpoints = convertToAntPatterns(endpoints);
+		antEndpoints.add("/swagger-ui.html");
+
+		http.cors().and().authorizeRequests()
 				//Promotion endpoints
-				.antMatchers(HttpMethod.GET,"/api/promotions/{\\d+}").permitAll()
-				.antMatchers(HttpMethod.GET,"/api/promotions").permitAll()
-				//Product endpoints
-				.antMatchers(HttpMethod.GET,"/api/products/{\\d+}").permitAll()
-				//User endpoints
-				.antMatchers(HttpMethod.GET, "/api/users").permitAll()
-				//ProductGroup endpoints
-				.antMatchers(HttpMethod.GET, "/api/productsgroups").permitAll()
-				//Swagger endpoints
-				.antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
+				.antMatchers(antEndpoints.toArray(new String[antEndpoints.size()])).permitAll()
 				.anyRequest().authenticated()
 				.and()
 				.addFilter(new JWTAuthenticationFilter(authenticationManager(), userRepository, bCryptPasswordEncoder))
@@ -52,6 +58,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
+	}
+
+	private List<String> convertToAntPatterns(List<String> endpoints) {
+		List<String> newEndpoints = new ArrayList<>();
+		for(String endpoint : endpoints){
+			if(endpoint.contains("{") && endpoint.contains("}")){
+				String newEndpoint = endpoint.replaceAll("\\{.+}", "{\\\\d+}");
+				newEndpoints.add(newEndpoint);
+			}else{
+				newEndpoints.add(endpoint);
+			}
+		}
+		return newEndpoints;
+	}
+
+	private List<String> getAllPublicEndpoints() {
+		AnnotationSearcher annotationSearcher = new AnnotationSearcher();
+		List<String> endpoints = new ArrayList<>();
+		for(Class clazz : annotationSearcher.getAllRestController()){
+			List<Method> methods = annotationSearcher.getMethodsAnnotatedWith(clazz, PublicEndpoint.class);
+			endpoints.addAll(annotationSearcher.getRequestMappingValue(methods));
+		}
+		return endpoints;
 	}
 
 	@Override

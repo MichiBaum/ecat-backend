@@ -1,5 +1,6 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.UserConverter;
 import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.User;
@@ -23,11 +24,12 @@ import static com.itensis.ecat.utilities.OptionalUtilities.ifPresentElseThrow;
 @RestController
 @RequiredArgsConstructor
 @Api(value = "User Endpoints")
-class UserRestController {
+public class UserRestController {
 
 	private final UserService userService;
 	private final UserConverter userConverter;
 
+	@PublicEndpoint
 	@ApiOperation(value = "GET all Users")
 	@RequestMapping(value = "/api/users", method = RequestMethod.GET)
 	public List<ReturnUserDto> getUsers(){

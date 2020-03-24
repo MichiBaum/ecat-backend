@@ -12,7 +12,7 @@ import java.util.Date;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(Exception.class) //TODO maybe delete?
     public final ResponseEntity<ErrorDetails> handleException(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), ex.getMessage(), ex.getClass(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);

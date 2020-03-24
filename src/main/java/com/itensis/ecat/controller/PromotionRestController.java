@@ -1,5 +1,6 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionConverter;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
@@ -28,6 +29,7 @@ public class PromotionRestController {
 	private final PromotionService promotionService;
 	private final PromotionConverter promotionConverter;
 
+	@PublicEndpoint
 	@ApiOperation(value = "GET all Promotions")
 	@RequestMapping(value = "/api/promotions", method = RequestMethod.GET)
 	public List<ReturnPromotionDto> getAllPromotions(){
@@ -36,6 +38,7 @@ public class PromotionRestController {
 				.collect(Collectors.toList());
 	}
 
+	@PublicEndpoint
 	@ApiOperation(value = "GET the Promotions with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.GET)
 	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Optional<Promotion> promotion){

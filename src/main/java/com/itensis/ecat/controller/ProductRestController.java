@@ -1,5 +1,6 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductConverter;
 import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.dtos.ReturnProductDto;
@@ -25,6 +26,7 @@ public class ProductRestController {
 	private final ProductConverter productConverter;
 	private final ProductService productService;
 
+	@PublicEndpoint
 	@ApiOperation(value = "GET the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.GET)
 	public ReturnProductDto getProduct(@PathVariable(value = "id") Optional<Product> product){

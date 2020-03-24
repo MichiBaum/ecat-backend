@@ -1,5 +1,6 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductGroupConverter;
 import com.itensis.ecat.dtos.ReturnProductGroupDto;
 import com.itensis.ecat.services.ProductGroupService;
@@ -21,6 +22,7 @@ public class ProductGroupRestController {
 	private final ProductGroupConverter productGroupConverter;
 	private final ProductGroupService productGroupService;
 
+	@PublicEndpoint
 	@ApiOperation(value = "GET all Productgroups with ProductClass and ProductFamily")
 	@RequestMapping(value = "/api/productsgroups", method = RequestMethod.GET)
 	public List<ReturnProductGroupDto> getProductGroups(){
