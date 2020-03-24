@@ -48,9 +48,9 @@ public class InitDB {
 
 	private void initializeProducts() {
 		String imageName = CreateImage.createImage(imagePath);
-		ProductGroup productGroup = productGroupRepository.saveAndFlush(new ProductGroup("Befestigungsmaterialien", Collections.emptyList()));
-		ProductClass productClass = productClassRepository.saveAndFlush(new ProductClass("Schrauben", Collections.emptyList(), productGroup));
-		ProductFamily productFamily = productFamilyRepository.saveAndFlush(new ProductFamily("Dorks", Collections.emptyList(), productClass));
+		ProductGroup productGroup = productGroupRepository.saveAndFlush(new ProductGroup("Befestigungsmaterialien"));
+		ProductClass productClass = productClassRepository.saveAndFlush(new ProductClass("Schrauben", productGroup));
+		ProductFamily productFamily = productFamilyRepository.saveAndFlush(new ProductFamily("Dorks", productClass));
 		Product product = productRepository.saveAndFlush(new Product("Schraube XYZ", "1212090909 0990974", imageName, "This is a Descripption", 12.50, new Date().getTime(), productFamily));
 	}
 

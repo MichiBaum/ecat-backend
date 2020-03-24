@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -28,9 +29,9 @@ public class ProductFamily extends AbstractEntity{
 	@JoinColumn(name = "PRODUCT_CLASS")
 	private ProductClass productClass;
 
-	public ProductFamily(String name, List<Product> products, ProductClass productClass){
+	public ProductFamily(String name, ProductClass productClass){
 		this.name = name;
-		this.products = products;
+		this.products = new ArrayList<>();
 		this.productClass = productClass;
 	}
 
