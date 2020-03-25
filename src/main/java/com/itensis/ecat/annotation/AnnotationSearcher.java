@@ -12,7 +12,7 @@ import java.util.*;
 
 public class AnnotationSearcher {
 
-    public List<Method> getMethodsAnnotatedWith(final Class<?> type, final Class<? extends Annotation> annotation) {
+    public List<Method> getMethodsAnnotatedWith(Class<?> type, Class<? extends Annotation> annotation) {
         Method[] methods = type.getMethods();
         List<Method> annotatedMethods = new ArrayList<>(methods.length);
         for (Method method : methods) {
