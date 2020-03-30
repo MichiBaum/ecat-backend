@@ -64,9 +64,6 @@ public class PromotionRestController {
 	@ApiOperation(value = "Update or create a Promotion")
 	@RequestMapping(value = "/api/promotions/save", method = RequestMethod.POST)
 	public ResponseEntity savePromotion(@RequestBody @Valid SavePromotionDto savePromotionDto){
-		if(savePromotionDto == null){
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
 		Promotion promotion;
 		if(savePromotionDto.getId() == null || savePromotionDto.getId() == 0){
 			promotion = promotionConverter.toEntity(savePromotionDto);

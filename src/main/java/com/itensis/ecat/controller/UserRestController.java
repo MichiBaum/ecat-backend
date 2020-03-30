@@ -61,9 +61,6 @@ public class UserRestController {
 	@ApiOperation(value = "Update or create a User")
 	@RequestMapping(value = "/api/users/save", method = RequestMethod.POST)
 	public ResponseEntity saveUser(@RequestBody @Valid SaveUserDto saveUserDto){
-		if(saveUserDto == null){
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
 		User user;
 		if(saveUserDto.getId() == null || saveUserDto.getId() == 0){
 			user = userConverter.toEntity(saveUserDto);

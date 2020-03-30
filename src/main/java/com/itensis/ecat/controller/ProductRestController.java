@@ -73,9 +73,6 @@ public class ProductRestController {
 	@ApiOperation(value = "Update or create a Product")
 	@RequestMapping(value = "/api/products/save", method = RequestMethod.POST)
 	public ResponseEntity saveProduct(@RequestBody @Valid SaveProductDto saveProductDto){
-		if(saveProductDto == null){
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
-		}
 		Product product;
 		if(saveProductDto.getId() == null || saveProductDto.getId() == 0){
 			product = productConverter.toEntity(saveProductDto);
