@@ -19,6 +19,28 @@ public class PromotionValidator implements Validator {
     public void validate(@NonNull Object target, @NonNull Errors errors) {
         SavePromotionDto savePromotionDto = (SavePromotionDto) target;
 
+        validateObject(savePromotionDto, errors);
+    }
 
+    private void validateObject(SavePromotionDto savePromotionDto, Errors errors) {
+        if(savePromotionDto.getStartdate() == null || savePromotionDto.getStartdate() == 0){
+            errors.reject("promotion.startdate.notSet");
+        }
+
+        if(savePromotionDto.getEndDate() == null || savePromotionDto.getEndDate() == 0){
+            errors.reject("promotion.enddate.notSet");
+        }
+
+        if(savePromotionDto.getEndDate() < savePromotionDto.getStartdate()){
+            errors.reject("promotion.startdate.biggerThanEnd");
+        }
+
+        if(savePromotionDto.getDescription() == null || savePromotionDto.getDescription().isBlank()){
+            savePromotionDto.setDescription("");
+        }
+
+        if(savePromotionDto.getTitle() == null || savePromotionDto.getTitle().isBlank()){
+            errors.reject("promotion.title.notSet");
+        }
     }
 }
