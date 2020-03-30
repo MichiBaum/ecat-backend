@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -59,7 +60,7 @@ public class UserRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "Update or create a User")
 	@RequestMapping(value = "/api/users/save", method = RequestMethod.POST)
-	public ResponseEntity saveUser(@RequestBody SaveUserDto saveUserDto){
+	public ResponseEntity saveUser(@RequestBody @Valid SaveUserDto saveUserDto){
 		if(saveUserDto == null){
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}

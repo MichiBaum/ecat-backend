@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,7 +63,7 @@ public class PromotionRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "Update or create a Promotion")
 	@RequestMapping(value = "/api/promotions/save", method = RequestMethod.POST)
-	public ResponseEntity savePromotion(@RequestBody SavePromotionDto savePromotionDto){
+	public ResponseEntity savePromotion(@RequestBody @Valid SavePromotionDto savePromotionDto){
 		if(savePromotionDto == null){
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}

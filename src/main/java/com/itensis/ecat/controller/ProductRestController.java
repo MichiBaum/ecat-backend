@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +72,7 @@ public class ProductRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "Update or create a Product")
 	@RequestMapping(value = "/api/products/save", method = RequestMethod.POST)
-	public ResponseEntity saveProduct(@RequestBody SaveProductDto saveProductDto){
+	public ResponseEntity saveProduct(@RequestBody @Valid SaveProductDto saveProductDto){
 		if(saveProductDto == null){
 			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
