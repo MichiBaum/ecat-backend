@@ -4,17 +4,18 @@ import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionConverter;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
+import com.itensis.ecat.dtos.SavePromotionDto;
 import com.itensis.ecat.services.PromotionService;
+import com.itensis.ecat.validator.PromotionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +29,12 @@ public class PromotionRestController {
 
 	private final PromotionService promotionService;
 	private final PromotionConverter promotionConverter;
+	private final PromotionValidator promotionValidator;
+
+	@InitBinder("savePromotionDto")
+	public void initChangeCommuneBinder(WebDataBinder binder) {
+		binder.setValidator(promotionValidator);
+	}
 
 	@PublicEndpoint
 	@ApiOperation(value = "GET all Promotions")
@@ -50,6 +57,27 @@ public class PromotionRestController {
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
 	public void deleteProduct(@PathVariable(value = "id") Optional<Promotion> promotion){
 		promotionService.delete(ifPresentElseThrow(promotion));
+	}
+
+	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@ApiOperation(value = "Update or create a Promotion")
+	@RequestMapping(value = "/api/promotions/save", method = RequestMethod.POST)
+	public ResponseEntity savePromotion(@RequestBody SavePromotionDto savePromotionDto){
+		if(savePromotionDto == null){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		Promotion promotion;
+		if(savePromotionDto.getId() == null || savePromotionDto.getId() == 0){
+			promotion = promotionConverter.toEntity(savePromotionDto);
+		}else{
+			Optional<Promotion> oldPromotion = promotionService.get(savePromotionDto.getId());
+			if(oldPromotion.isPresent()) {
+				promotion = promotionService.update(oldPromotion.get(), savePromotionDto);
+			}else {
+				return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			}
+		}
+		return new ResponseEntity(promotionConverter.toDto(promotionService.save(promotion)), HttpStatus.OK);
 	}
 
 }
