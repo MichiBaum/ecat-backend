@@ -40,7 +40,7 @@ public class UserRestController {
 		binder.setValidator(userValidator);
 	}
 
-
+	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "GET all Users")
 	@RequestMapping(value = "/api/users", method = RequestMethod.GET)
@@ -50,6 +50,7 @@ public class UserRestController {
 				.collect(Collectors.toList());
 	}
 
+	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "DELETE the user with the specific ID")
 	@RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
@@ -57,6 +58,7 @@ public class UserRestController {
 		userService.delete(ifPresentElseThrow(user));
 	}
 
+	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "Update or create a User")
 	@RequestMapping(value = "/api/users/save", method = RequestMethod.POST)

@@ -37,6 +37,7 @@ public class PromotionRestController {
 		binder.setValidator(promotionValidator);
 	}
 
+	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "GET all Promotions")
 	@RequestMapping(value = "/api/promotions", method = RequestMethod.GET)
@@ -46,6 +47,7 @@ public class PromotionRestController {
 				.collect(Collectors.toList());
 	}
 
+	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "GET the Promotions with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.GET)
@@ -53,6 +55,7 @@ public class PromotionRestController {
 		return promotionConverter.toDto(ifPresentElseThrow(promotion));
 	}
 
+	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "DELETE the Promotion with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
@@ -60,6 +63,7 @@ public class PromotionRestController {
 		promotionService.delete(ifPresentElseThrow(promotion));
 	}
 
+	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "Update or create a Promotion")
 	@RequestMapping(value = "/api/promotions/save", method = RequestMethod.POST)

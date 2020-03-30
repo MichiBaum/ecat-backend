@@ -41,6 +41,7 @@ public class ProductRestController {
 		binder.setValidator(productValidator);
 	}
 
+	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "GET the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.GET)
@@ -48,6 +49,7 @@ public class ProductRestController {
 		return productConverter.toDto(ifPresentElseThrow(product));
 	}
 
+	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "DELETE the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.DELETE)
@@ -55,6 +57,7 @@ public class ProductRestController {
 		productService.delete(ifPresentElseThrow(product));
 	}
 
+	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "Endpoint to search for Products")
 	@RequestMapping(value = "/api/products/search", method = RequestMethod.GET)
@@ -69,6 +72,7 @@ public class ProductRestController {
 		return Collections.emptyList();
 	}
 
+	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "Update or create a Product")
 	@RequestMapping(value = "/api/products/save", method = RequestMethod.POST)

@@ -7,6 +7,7 @@ import com.itensis.ecat.services.ProductGroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,7 @@ public class ProductGroupRestController {
 	private final ProductGroupConverter productGroupConverter;
 	private final ProductGroupService productGroupService;
 
+	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "GET all Productgroups with ProductClass and ProductFamily")
 	@RequestMapping(value = "/api/productsgroups", method = RequestMethod.GET)
