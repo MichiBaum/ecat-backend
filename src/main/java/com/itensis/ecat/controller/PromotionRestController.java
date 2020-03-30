@@ -32,7 +32,7 @@ public class PromotionRestController {
 	private final PromotionValidator promotionValidator;
 
 	@InitBinder("savePromotionDto")
-	public void initChangeCommuneBinder(WebDataBinder binder) {
+	public void initSavePromotionBinder(WebDataBinder binder) {
 		binder.setValidator(promotionValidator);
 	}
 

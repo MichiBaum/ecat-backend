@@ -36,7 +36,7 @@ public class ProductRestController {
 	private final ProductValidator productValidator;
 
 	@InitBinder("saveProductDto")
-	public void initChangeCommuneBinder(WebDataBinder binder) {
+	public void initSaveProductBinder(WebDataBinder binder) {
 		binder.setValidator(productValidator);
 	}
 
