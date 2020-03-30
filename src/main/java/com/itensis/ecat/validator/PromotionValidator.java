@@ -1,6 +1,7 @@
 package com.itensis.ecat.validator;
 
 import com.itensis.ecat.dtos.SavePromotionDto;
+import com.itensis.ecat.repository.PromotionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,9 @@ import org.springframework.validation.Validator;
 @Component
 @RequiredArgsConstructor
 public class PromotionValidator implements Validator {
+
+    private final PromotionRepository promotionRepository;
+
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
         return SavePromotionDto.class.isAssignableFrom(clazz);
@@ -23,6 +27,12 @@ public class PromotionValidator implements Validator {
     }
 
     private void validateObject(SavePromotionDto savePromotionDto, Errors errors) {
+        if(savePromotionDto.getId() != null && savePromotionDto.getId() != 0){
+            if(promotionRepository.findById(savePromotionDto.getId()).isEmpty()){
+                errors.reject("promotion.id.notValid");
+            }
+        }
+
         if(savePromotionDto.getStartdate() == null || savePromotionDto.getStartdate() == 0){
             errors.reject("promotion.startdate.notSet");
         }

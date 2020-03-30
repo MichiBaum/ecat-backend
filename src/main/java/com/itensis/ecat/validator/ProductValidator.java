@@ -3,6 +3,8 @@ package com.itensis.ecat.validator;
 import com.itensis.ecat.domain.ProductFamily;
 import com.itensis.ecat.dtos.SaveProductDto;
 import com.itensis.ecat.repository.ProductFamilyRepository;
+import com.itensis.ecat.repository.ProductRepository;
+import com.itensis.ecat.repository.PromotionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class ProductValidator implements Validator {
 
     private final ProductFamilyRepository productFamilyRepository;
+    private final ProductRepository productRepository;
 
     @Override
     public boolean supports(@NonNull Class<?> clazz) {
@@ -29,6 +32,12 @@ public class ProductValidator implements Validator {
     }
 
     private void validateObject(SaveProductDto saveProductDto, Errors errors) {
+        if(saveProductDto.getId() != null && saveProductDto.getId() != 0){
+            if(productRepository.findById(saveProductDto.getId()).isEmpty()){
+                errors.reject("product.id.notValid");
+            }
+        }
+
         if(saveProductDto.getDescription() == null || saveProductDto.getDescription().isBlank()){
             saveProductDto.setDescription("");
         }
@@ -45,7 +54,7 @@ public class ProductValidator implements Validator {
             errors.reject("product.price.notSet");
         }
 
-        if(saveProductDto.getProductFamilyId() == null){
+        if(saveProductDto.getProductFamilyId() == null || saveProductDto.getProductFamilyId() == 0){
             errors.reject("product.family.notSet");
         }else{
             Optional<ProductFamily> optProductFamily = productFamilyRepository.findById(saveProductDto.getProductFamilyId());
