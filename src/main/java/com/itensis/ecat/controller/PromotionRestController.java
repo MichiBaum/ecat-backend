@@ -56,7 +56,7 @@ public class PromotionRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "DELETE the Promotion with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
-	public void deleteProduct(@PathVariable(value = "id") Optional<Promotion> promotion){
+	public void deletePromotion(@PathVariable(value = "id") Optional<Promotion> promotion){
 		promotionService.delete(ifPresentElseThrow(promotion));
 	}
 

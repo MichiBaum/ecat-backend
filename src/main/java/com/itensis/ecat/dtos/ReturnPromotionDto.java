@@ -11,6 +11,6 @@ public class ReturnPromotionDto {
 	private Long id;
 	private String title;
 	private String description;
-	private Long startdate;
+	private Long startDate;
 	private Long endDate;
 }
