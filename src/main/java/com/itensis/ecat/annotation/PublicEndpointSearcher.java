@@ -9,8 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class AnnotationSearcher {
+public class PublicEndpointSearcher {
+
+    private List<String> restControllerPackages;
+
+    public PublicEndpointSearcher(String... restControllerPackages){
+        this.restControllerPackages = Arrays.asList(restControllerPackages);
+    }
 
     public List<Method> getMethodsAnnotatedWith(Class<?> type, Class<? extends Annotation> annotation) {
         Method[] methods = type.getMethods();
@@ -23,24 +30,30 @@ public class AnnotationSearcher {
         return annotatedMethods;
     }
 
-    public List<String> getRequestMappingValue(List<Method> methods){
-        List<String> values = new ArrayList<>();
-        for(Method method : methods){
-            values.addAll(Arrays.asList(method.getAnnotation(RequestMapping.class).value()));
-        }
+    public List<PublicEndpointDetails> getRequestMappingValue(Method method){
+        List<PublicEndpointDetails> values = new ArrayList<>();
+        values.add(
+            new PublicEndpointDetails(
+                Arrays.asList(method.getAnnotation(RequestMapping.class).value()),
+                method.getAnnotation(PublicEndpoint.class).character(),
+                method.getAnnotation(PublicEndpoint.class).numerus()
+            )
+        );
         return values;
     }
 
     public List<Class> getAllRestController(){
         ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new AnnotationTypeFilter(RestController.class));
-        List<Class> classes = new ArrayList<>();
-        for (BeanDefinition beanDefinition : scanner.findCandidateComponents("com.itensis.ecat.controller")){
+        List<BeanDefinition> beanDefinitions = restControllerPackages.stream().map(scanner::findCandidateComponents).flatMap(Collection::parallelStream).collect(Collectors.toList());
+        return beanDefinitions.stream().map(beanDefinition -> {
             try {
-                classes.add(Class.forName(beanDefinition.getBeanClassName()));
-            }catch (ClassNotFoundException ignored){}
-        }
-        return classes;
+                return Class.forName(beanDefinition.getBeanClassName());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
     }
 
 }
