@@ -34,7 +34,7 @@ public class PromotionService {
 	public Promotion update(Promotion promotion, SavePromotionDto promotionDto) {
 		promotion.setTitle(promotionDto.getTitle());
 		promotion.setDescription(promotionDto.getDescription());
-		promotion.setStartDate(promotionDto.getStartdate());
+		promotion.setStartDate(promotionDto.getStartDate());
 		promotion.setEndDate(promotionDto.getEndDate());
 		return promotion;
 	}

@@ -33,7 +33,7 @@ public class PromotionValidator implements Validator {
             }
         }
 
-        if(savePromotionDto.getStartdate() == null || savePromotionDto.getStartdate() == 0){
+        if(savePromotionDto.getStartDate() == null || savePromotionDto.getStartDate() == 0){
             errors.reject("promotion.startdate.notSet");
         }
 
@@ -41,7 +41,7 @@ public class PromotionValidator implements Validator {
             errors.reject("promotion.enddate.notSet");
         }
 
-        if(savePromotionDto.getEndDate() < savePromotionDto.getStartdate()){
+        if(savePromotionDto.getEndDate() < savePromotionDto.getStartDate()){
             errors.reject("promotion.startdate.biggerThanEnd");
         }
 

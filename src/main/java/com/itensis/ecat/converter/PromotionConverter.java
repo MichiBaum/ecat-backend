@@ -24,7 +24,7 @@ public class PromotionConverter {
 		return new Promotion(
 				savePromotionDto.getTitle(),
 				savePromotionDto.getDescription(),
-				savePromotionDto.getStartdate(),
+				savePromotionDto.getStartDate(),
 				savePromotionDto.getEndDate(),
 				new Date().getTime()
 		);

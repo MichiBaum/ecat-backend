@@ -51,7 +51,11 @@ public class InitDB {
 		ProductGroup productGroup = productGroupRepository.saveAndFlush(new ProductGroup("Befestigungsmaterialien"));
 		ProductClass productClass = productClassRepository.saveAndFlush(new ProductClass("Schrauben", productGroup));
 		ProductFamily productFamily = productFamilyRepository.saveAndFlush(new ProductFamily("Dorks", productClass));
-		Product product = productRepository.saveAndFlush(new Product("Schraube XYZ", "1212090909 0990974", imageName, "This is a Descripption", 12.50, new Date().getTime(), productFamily));
+		productRepository.saveAndFlush(new Product("ASSY® 3.0 BLAU VERZINKT SPANPLATTENSCHRAUBE", "1212090909 0990874", imageName, "Für den universellen Einsatz im Möbelbau, Ladenbau, Innenausbau, Dachbereich und Holzbau", 12.50, new Date().getTime(), productFamily));
+		productRepository.saveAndFlush(new Product("ASSY® 3.0 P SPANPLATTENSCHRAUBE", "1212093909 0940974", imageName, "Die Schraube mit Zusammenpresseffekt. Optimal für Plattenwerkstoffe. Besonders geeignet für den Innenausbau und für den Möbelbau.", 12.50, new Date().getTime(), productFamily));
+		productRepository.saveAndFlush(new Product("ASSY® 3.0 KOPFLOCHGEBOHRT SPANPLATTENSCHRAUBE", "1212190909 0980974", imageName, "Speziell für die Verschraubung Holz mit Holz im Möbel und Ladenbau. Der Kopf kann mit passenden farblich abgestimmten Kappen abgedeckt werden.", 12.50, new Date().getTime(), productFamily));
+		productRepository.saveAndFlush(new Product("ASSY® 3.0 GELB VERZINKT SPANPLATTENSCHRAUBE", "1212090909 0950944", imageName, "Für den universellen Einsatz im Möbel- und Innenausbau sowie im Holzbau.", 12.50, new Date().getTime(), productFamily));
+		productRepository.saveAndFlush(new Product("ASSY® 3.0 GOLD VERZINKT SPANPLATTENSCHRAUBE", "1212290909 0920974", imageName, "Für den universellen Einsatz im Möbel- und Innenausbau sowie im Holzbau.", 12.50, new Date().getTime(), productFamily));
 	}
 
 	private User initUser(List<Permission> permissions) {
