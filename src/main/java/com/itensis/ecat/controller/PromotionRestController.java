@@ -1,5 +1,7 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.Character;
+import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionConverter;
 import com.itensis.ecat.domain.Promotion;
@@ -48,7 +50,7 @@ public class PromotionRestController {
 	}
 
 	@CrossOrigin
-	@PublicEndpoint
+	@PublicEndpoint(character = Character.DIGIT, numerus = Numerus.PLURAL)
 	@ApiOperation(value = "GET the Promotions with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.GET)
 	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Optional<Promotion> promotion){

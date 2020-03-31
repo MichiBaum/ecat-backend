@@ -1,12 +1,9 @@
 package com.itensis.ecat.services;
 
-import com.itensis.ecat.domain.Product;
-import com.itensis.ecat.domain.ProductFamily;
-import com.itensis.ecat.domain.Promotion;
-import com.itensis.ecat.domain.QProduct;
+import com.itensis.ecat.domain.*;
 import com.itensis.ecat.dtos.ProductSearchDto;
-import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.dtos.SaveProductDto;
+import com.itensis.ecat.repository.ProductClassRepository;
 import com.itensis.ecat.repository.ProductFamilyRepository;
 import com.itensis.ecat.repository.ProductRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -28,6 +25,7 @@ public class ProductService {
 
 	private final ProductRepository productRepository;
 	private final ProductFamilyRepository productFamilyRepository;
+	private final ProductClassRepository productClassRepository;
 
 	public void delete(Product product) {
 		productRepository.delete(product);
@@ -64,5 +62,13 @@ public class ProductService {
 			product.setProductFamily(optProductFamily.get());
 		}
 		return product;
+	}
+
+	public List<ProductFamily> findProductFamiliesBy(ProductClass productClass) {
+		return productFamilyRepository.findByProductClass(productClass);
+	}
+
+	public List<ProductClass> findProductClassesBy(ProductGroup productGroup) {
+		return productClassRepository.findByProductGroup(productGroup);
 	}
 }

@@ -19,16 +19,8 @@ public class ProductGroup extends AbstractEntity {
 	@Column(nullable = false, name = "NAME")
 	private String name;
 
-	@OneToMany(
-			fetch = FetchType.LAZY,
-			cascade= {CascadeType.ALL},
-			mappedBy = "id"
-	)
-	private List<ProductClass> productClasses;
-
 	public ProductGroup(String name){
 		this.name = name;
-		this.productClasses = new ArrayList<>();
 	}
 
 }

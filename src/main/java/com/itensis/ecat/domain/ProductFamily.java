@@ -18,20 +18,12 @@ public class ProductFamily extends AbstractEntity{
 	@Column(nullable = false, name = "NAME")
 	private String name;
 
-	@OneToMany(
-			fetch = FetchType.LAZY,
-			cascade= {CascadeType.ALL},
-			mappedBy = "id"
-	)
-	private List<Product> products;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PRODUCT_CLASS")
 	private ProductClass productClass;
 
 	public ProductFamily(String name, ProductClass productClass){
 		this.name = name;
-		this.products = new ArrayList<>();
 		this.productClass = productClass;
 	}
 

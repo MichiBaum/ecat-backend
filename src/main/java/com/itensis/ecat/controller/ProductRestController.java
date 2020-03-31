@@ -1,5 +1,7 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.Character;
+import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductConverter;
 import com.itensis.ecat.domain.Product;
@@ -42,7 +44,7 @@ public class ProductRestController {
 	}
 
 	@CrossOrigin
-	@PublicEndpoint
+	@PublicEndpoint(character = Character.DIGIT, numerus = Numerus.PLURAL)
 	@ApiOperation(value = "GET the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.GET)
 	public ReturnProductDto getProduct(@PathVariable(value = "id") Optional<Product> product){
