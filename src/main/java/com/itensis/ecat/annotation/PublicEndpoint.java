@@ -8,4 +8,9 @@ import java.lang.annotation.Target;
 @Target(value = ElementType.METHOD)
 @Retention(value = RetentionPolicy.RUNTIME)
 public @interface PublicEndpoint {
+
+    Numerus numerus() default Numerus.NONE;
+
+    Character character() default Character.NONE;
+
 }
