@@ -47,16 +47,16 @@ public class ProductRestController {
 	@PublicEndpoint(character = Character.DIGIT, numerus = Numerus.PLURAL)
 	@ApiOperation(value = "GET the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.GET)
-	public ReturnProductDto getProduct(@PathVariable(value = "id") Optional<Product> product){
-		return productConverter.toDto(ifPresentElseThrow(product));
+	public ReturnProductDto getProduct(@PathVariable(value = "id") Product product){
+		return productConverter.toDto(product);
 	}
 
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "DELETE the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.DELETE)
-	public void deleteProduct(@PathVariable(value = "id") Optional<Product> product){
-		productService.delete(ifPresentElseThrow(product));
+	public void deleteProduct(@PathVariable(value = "id") Product product){
+		productService.delete(product);
 	}
 
 	@CrossOrigin

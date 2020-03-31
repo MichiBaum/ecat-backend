@@ -53,16 +53,16 @@ public class PromotionRestController {
 	@PublicEndpoint(character = Character.DIGIT, numerus = Numerus.PLURAL)
 	@ApiOperation(value = "GET the Promotions with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.GET)
-	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Optional<Promotion> promotion){
-		return promotionConverter.toDto(ifPresentElseThrow(promotion));
+	public ReturnPromotionDto getPromotion(@PathVariable(value = "id") Promotion promotion){
+		return promotionConverter.toDto(promotion);
 	}
 
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "DELETE the Promotion with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
-	public void deletePromotion(@PathVariable(value = "id") Optional<Promotion> promotion){
-		promotionService.delete(ifPresentElseThrow(promotion));
+	public void deletePromotion(@PathVariable(value = "id") Promotion promotion){
+		promotionService.delete(promotion);
 	}
 
 	@CrossOrigin

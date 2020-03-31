@@ -54,8 +54,8 @@ public class UserRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "DELETE the user with the specific ID")
 	@RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
-	public void deleteProduct(@PathVariable(value = "id") Optional<User> user){
-		userService.delete(ifPresentElseThrow(user));
+	public void deleteProduct(@PathVariable(value = "id") User user){
+		userService.delete(user);
 	}
 
 	@CrossOrigin
