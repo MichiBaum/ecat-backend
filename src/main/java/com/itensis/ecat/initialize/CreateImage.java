@@ -48,10 +48,10 @@ class CreateImage {
 			g2d.drawString(text, 0, fm.getAscent());
 			g2d.dispose();
 
-			File file = new File(path + "Text.png");
+			File file = new File(path + "Test.png");
 			imageCreatedSuccessfull = ImageIO.write(img, "png", file);
 			if(imageCreatedSuccessfull){
-				return "Text.png";
+				return "Test.png";
 			}else{
 				return "";
 			}
