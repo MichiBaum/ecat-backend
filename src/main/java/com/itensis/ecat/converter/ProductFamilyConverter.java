@@ -5,7 +5,7 @@ import com.itensis.ecat.dtos.ReturnProductFamilyDto;
 import org.springframework.stereotype.Component;
 
 @Component
-class ProductFamilyConverter {
+public class ProductFamilyConverter {
 
 	public ReturnProductFamilyDto toDto(ProductFamily productFamily){
 		return new ReturnProductFamilyDto(
