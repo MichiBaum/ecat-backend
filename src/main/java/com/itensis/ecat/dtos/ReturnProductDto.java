@@ -15,4 +15,5 @@ public class ReturnProductDto {
 	private String description;
 	private Double price;
 	private Long creationDate;
+	private Long productFamilyId;
 }
