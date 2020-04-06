@@ -92,4 +92,12 @@ public class ProductRestController {
 		return new ResponseEntity(productConverter.toDto(productService.save(product)), HttpStatus.OK);
 	}
 
+	@CrossOrigin
+	@PublicEndpoint
+	@ApiOperation(value = "Get all Products")
+	@RequestMapping(value = "/api/products/all")
+	public List<ReturnProductDto> getProducts(){
+		return productService.getAll().stream().map(productConverter::toDto).collect(Collectors.toList());
+	}
+
 }
