@@ -1,6 +1,7 @@
 package com.itensis.ecat.services;
 
 import com.itensis.ecat.domain.Product;
+import com.itensis.ecat.domain.ProductClass;
 import com.itensis.ecat.domain.ProductGroup;
 import com.itensis.ecat.repository.ProductClassRepository;
 import com.itensis.ecat.repository.ProductFamilyRepository;
@@ -15,22 +16,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductGroupService {
+public class ProductClassService {
 
-	private final ProductGroupRepository productGroupRepository;
-	private final ProductClassRepository productClassRepository;
 	private final ProductFamilyRepository productFamilyRepository;
 	private final ProductRepository productRepository;
 
-	public List<ProductGroup> getAll() {
-		return productGroupRepository.findAll();
-	}
-
-	public List<Product> findByProductGroup(ProductGroup productGroup) {
-		return productClassRepository.findByProductGroup(productGroup)
+	public List<Product> findByProductClass(ProductClass productClass) {
+		return productFamilyRepository.findByProductClass(productClass)
 				.stream()
-				.map(productFamilyRepository::findByProductClass)
-				.flatMap(Collection::parallelStream)
 				.map(productRepository::findByProductFamily)
 				.flatMap(Collection::parallelStream)
 				.collect(Collectors.toList());

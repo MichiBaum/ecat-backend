@@ -5,9 +5,11 @@ import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductConverter;
 import com.itensis.ecat.converter.ProductGroupConverter;
+import com.itensis.ecat.domain.ProductClass;
 import com.itensis.ecat.domain.ProductGroup;
 import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.dtos.ReturnProductGroupDto;
+import com.itensis.ecat.services.ProductClassService;
 import com.itensis.ecat.services.ProductGroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,27 +23,18 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Api(value = "Product Group Endpoints")
-public class ProductGroupRestController {
+public class ProductClassRestController {
 
-	private final ProductGroupConverter productGroupConverter;
-	private final ProductGroupService productGroupService;
 	private final ProductConverter productConverter;
-
-	@CrossOrigin
-	@PublicEndpoint
-	@ApiOperation(value = "GET all Productgroups with ProductClass and ProductFamily")
-	@RequestMapping(value = "/api/productsgroups", method = RequestMethod.GET)
-	public List<ReturnProductGroupDto> getProductGroups(){
-		return productGroupService.getAll().stream().map(productGroupConverter::toDto).collect(Collectors.toList());
-	}
+	private final ProductClassService productClassService;
 
 	@CrossOrigin
 	@PublicEndpoint(character = Character.DIGIT, numerus = Numerus.PLURAL)
-	@ApiOperation(value = "Get all Products from this productgroup")
-	@RequestMapping(value = "/api/productgroups/{id}", method = RequestMethod.GET)
-	public List<ReturnProductDto> getProductsFromProductGroup(@PathVariable(value = "id") ProductGroup productGroup){
-		if(productGroup != null){
-			return productGroupService.findByProductGroup(productGroup).stream()
+	@ApiOperation(value = "Get all Products from this productclass")
+	@RequestMapping(value = "/api/productclasses/{id}", method = RequestMethod.GET)
+	public List<ReturnProductDto> getProductsFromProductClass(@PathVariable(value = "id") ProductClass productClass){
+		if(productClass != null){
+			return productClassService.findByProductClass(productClass).stream()
 					.map(productConverter::toDto)
 					.collect(Collectors.toList());
 		}

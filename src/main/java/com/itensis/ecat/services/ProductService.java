@@ -71,4 +71,5 @@ public class ProductService {
 	public List<ProductClass> findProductClassesBy(ProductGroup productGroup) {
 		return productClassRepository.findByProductGroup(productGroup);
 	}
+
 }

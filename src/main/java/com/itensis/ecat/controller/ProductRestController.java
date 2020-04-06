@@ -5,11 +5,9 @@ import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductConverter;
 import com.itensis.ecat.domain.Product;
-import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ProductSearchDto;
 import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.dtos.SaveProductDto;
-import com.itensis.ecat.dtos.SavePromotionDto;
 import com.itensis.ecat.services.ProductService;
 import com.itensis.ecat.validator.ProductValidator;
 import io.swagger.annotations.Api;
@@ -26,8 +24,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.itensis.ecat.utilities.OptionalUtilities.ifPresentElseThrow;
 
 @RestController
 @RequiredArgsConstructor
