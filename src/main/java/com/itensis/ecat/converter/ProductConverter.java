@@ -25,7 +25,8 @@ public class ProductConverter {
 				product.getPictureName(),
 				product.getDescription(),
 				product.getPrice(),
-				product.getCreationDate()
+				product.getCreationDate(),
+				product.getProductFamily().getId()
 		);
 	}
 
