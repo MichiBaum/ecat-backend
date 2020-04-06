@@ -32,7 +32,7 @@ public class Product extends AbstractEntity{
 	@Column(nullable = false, name = "CREATION_DATE")
 	private Long creationDate;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PRODUCT_FAMILY")
 	private ProductFamily productFamily;
 

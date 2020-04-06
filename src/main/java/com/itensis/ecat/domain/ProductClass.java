@@ -18,7 +18,7 @@ public class ProductClass extends AbstractEntity {
 	@Column(nullable = false, name = "NAME")
 	private String name;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "PRODUCT_GROUP")
 	private ProductGroup productGroup;
 
