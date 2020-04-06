@@ -4,13 +4,11 @@ import com.itensis.ecat.annotation.Character;
 import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductConverter;
-import com.itensis.ecat.converter.ProductGroupConverter;
-import com.itensis.ecat.domain.ProductClass;
+import com.itensis.ecat.converter.ProductFamilyConverter;
 import com.itensis.ecat.domain.ProductFamily;
 import com.itensis.ecat.dtos.ReturnProductDto;
-import com.itensis.ecat.services.ProductClassService;
+import com.itensis.ecat.dtos.ReturnProductFamilyDto;
 import com.itensis.ecat.services.ProductFamilyService;
-import com.itensis.ecat.services.ProductGroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +25,7 @@ public class ProductFamilyRestController {
 
 	private final ProductConverter productConverter;
 	private final ProductFamilyService productFamilyService;
+	private final ProductFamilyConverter productFamilyConverter;
 
 	@CrossOrigin
 	@PublicEndpoint(character = Character.DIGIT, numerus = Numerus.PLURAL)
@@ -39,6 +38,14 @@ public class ProductFamilyRestController {
 					.collect(Collectors.toList());
 		}
 		return Collections.emptyList();
+	}
+
+	@CrossOrigin
+	@PublicEndpoint
+	@ApiOperation(value = "Get all Product families")
+	@RequestMapping(value = "/api/productfamilies")
+	public List<ReturnProductFamilyDto> getProductFamilies(){
+		return this.productFamilyService.getAll().stream().map(productFamilyConverter::toDto).collect(Collectors.toList());
 	}
 
 }
