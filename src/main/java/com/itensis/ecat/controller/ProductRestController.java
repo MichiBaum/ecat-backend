@@ -95,7 +95,7 @@ public class ProductRestController {
 	@CrossOrigin
 	@PublicEndpoint
 	@ApiOperation(value = "Get all Products")
-	@RequestMapping(value = "/api/products/all")
+	@RequestMapping(value = "/api/products")
 	public List<ReturnProductDto> getProducts(){
 		return productService.getAll().stream().map(productConverter::toDto).collect(Collectors.toList());
 	}
