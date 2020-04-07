@@ -23,6 +23,9 @@ public class Promotion extends AbstractEntity {
 	@Column(nullable = false, name = "DESCRIPTION")
 	private String description;
 
+	@Column(nullable = false, name = "PICTURE_NAME")
+	private String pictureName;
+
 	@Column(nullable = false, name = "START_DATE")
 	private Long startDate;
 

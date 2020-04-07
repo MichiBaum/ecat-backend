@@ -20,7 +20,10 @@ public class InitDB {
 	private boolean initialize;
 
 	@Value("${product.image.path}")
-	private String imagePath;
+	private String productImagePath;
+
+	@Value("${promotion.image.path}")
+	private String promotionImagePath;
 
 	private final UserRepository userRepository;
 	private final PermissionRepository permissionRepository;
@@ -43,11 +46,12 @@ public class InitDB {
 
 	private void initPromotion() {
 		Long nowMilis = new Date().getTime();
-		promotionRepository.saveAndFlush(new Promotion("AB SOFORT: ALLE ONLINE-BESTELLUNGEN VERSANDKOSTENFREI!", "VERSANDKOSTEN WERDEN AUTOMATISCH ABGEZOGEN", nowMilis, nowMilis + 604800000L, nowMilis));
+		String imageName = CreateImage.createImage(promotionImagePath);
+		promotionRepository.saveAndFlush(new Promotion("AB SOFORT: ALLE ONLINE-BESTELLUNGEN VERSANDKOSTENFREI!", "VERSANDKOSTEN WERDEN AUTOMATISCH ABGEZOGEN", imageName, nowMilis, nowMilis + 604800000L, nowMilis));
 	}
 
 	private void initializeProducts() {
-		String imageName = CreateImage.createImage(imagePath);
+		String imageName = CreateImage.createImage(productImagePath);
 		ProductGroup productGroup = productGroupRepository.saveAndFlush(new ProductGroup("Befestigungsmaterialien"));
 		ProductClass productClass = productClassRepository.saveAndFlush(new ProductClass("Schrauben", productGroup));
 		ProductFamily productFamily = productFamilyRepository.saveAndFlush(new ProductFamily("Spanplattenschrauben", productClass));

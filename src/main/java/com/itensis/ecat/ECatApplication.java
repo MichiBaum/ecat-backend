@@ -42,8 +42,17 @@ public class ECatApplication extends SpringBootServletInitializer {
 	}
 
 	@PostConstruct
-	void checkImageFolderExists() throws Exception {
+	void checkProductImageFolderExists() throws Exception {
 		String imagePath = environment.getRequiredProperty("product.image.path");
+		File folder = new File(imagePath);
+		if(!folder.exists()){
+			throw new Exception("Folder with path: " + imagePath + " does not exist");
+		}
+	}
+
+	@PostConstruct
+	void checkPromotionImageFolderExists() throws Exception {
+		String imagePath = environment.getRequiredProperty("promotion.image.path");
 		File folder = new File(imagePath);
 		if(!folder.exists()){
 			throw new Exception("Folder with path: " + imagePath + " does not exist");

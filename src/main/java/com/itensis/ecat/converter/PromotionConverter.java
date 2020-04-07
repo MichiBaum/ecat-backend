@@ -15,6 +15,7 @@ public class PromotionConverter {
 				promotion.getId(),
 				promotion.getTitle(),
 				promotion.getDescription(),
+				promotion.getPictureName(),
 				promotion.getStartDate(),
 				promotion.getEndDate()
 		);
@@ -24,6 +25,7 @@ public class PromotionConverter {
 		return new Promotion(
 				savePromotionDto.getTitle(),
 				savePromotionDto.getDescription(),
+				"", //TODO
 				savePromotionDto.getStartDate(),
 				savePromotionDto.getEndDate(),
 				new Date().getTime()
