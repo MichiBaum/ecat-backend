@@ -17,9 +17,13 @@ import java.util.stream.Collectors;
 public class ProductFamilyService {
 
 	private final ProductRepository productRepository;
+	private final ProductFamilyRepository productFamilyRepository;
 
 	public List<Product> findByProductFamily(ProductFamily productFamily) {
 		return productRepository.findByProductFamily(productFamily);
 	}
 
+	public List<ProductFamily> getAll() {
+		return productFamilyRepository.findAll();
+	}
 }
