@@ -41,8 +41,10 @@ public class PromotionValidator implements Validator {
             errors.reject("promotion.enddate.notSet");
         }
 
-        if(savePromotionDto.getEndDate() < savePromotionDto.getStartDate()){
-            errors.reject("promotion.startdate.biggerThanEnd");
+        if(savePromotionDto.getStartDate() != null && savePromotionDto.getEndDate() != null){
+            if(savePromotionDto.getEndDate() < savePromotionDto.getStartDate()){
+                errors.reject("promotion.startdate.biggerThanEnd");
+            }
         }
 
         if(savePromotionDto.getDescription() == null || savePromotionDto.getDescription().isBlank()){
