@@ -93,7 +93,7 @@ public class ProductRestController {
 	}
 
 	@CrossOrigin
-	@PublicEndpoint
+	@PublicEndpoint //TODO why public
 	@ApiOperation(value = "Get all Products")
 	@RequestMapping(value = "/api/products")
 	public List<ReturnProductDto> getProducts(){

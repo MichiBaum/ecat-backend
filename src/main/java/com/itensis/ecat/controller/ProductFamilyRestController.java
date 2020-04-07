@@ -41,7 +41,7 @@ public class ProductFamilyRestController {
 	}
 
 	@CrossOrigin
-	@PublicEndpoint
+	@PublicEndpoint //TODO why public
 	@ApiOperation(value = "Get all Product families")
 	@RequestMapping(value = "/api/productfamilies")
 	public List<ReturnProductFamilyDto> getProductFamilies(){
