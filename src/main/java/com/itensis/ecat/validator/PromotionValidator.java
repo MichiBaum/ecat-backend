@@ -34,16 +34,16 @@ public class PromotionValidator implements Validator {
         }
 
         if(savePromotionDto.getStartDate() == null || savePromotionDto.getStartDate() == 0){
-            errors.reject("promotion.startdate.notSet");
+            errors.reject("promotion.startDate.notSet");
         }
 
         if(savePromotionDto.getEndDate() == null || savePromotionDto.getEndDate() == 0){
-            errors.reject("promotion.enddate.notSet");
+            errors.reject("promotion.endDate.notSet");
         }
 
         if(savePromotionDto.getStartDate() != null && savePromotionDto.getEndDate() != null){
             if(savePromotionDto.getEndDate() < savePromotionDto.getStartDate()){
-                errors.reject("promotion.startdate.biggerThanEnd");
+                errors.reject("promotion.startDate.biggerThanEnd");
             }
         }
 
