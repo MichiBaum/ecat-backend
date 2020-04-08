@@ -31,9 +31,8 @@ public class CustomExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public final ResponseEntity<? extends ErrorDetails> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request){
         List<String> validationErrors = ex.getBindingResult().getAllErrors().stream()
-                .map(ObjectError::getCodes)
+                .map(ObjectError::getCode)
                 .filter(Objects::nonNull)
-                .flatMap(Arrays::stream)
                 .collect(Collectors.toList());
         ValidationErrorDetails errorDetails = new ValidationErrorDetails(new Date().getTime(), ex.getMessage(), validationErrors, ex.getClass(), request.getDescription(false));
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
