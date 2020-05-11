@@ -167,7 +167,7 @@ INSERT INTO product_family(name, product_class) VALUES
     ('Familie 1 Kategorie 4 Spielzeuge', 44),
     ('Familie 2 Kategorie 4 Spielzeuge', 44),
     ('Familie 1 Kategorie 1 Gruppe 12', 45),
-    ('Familie 1 Kategorie 1 Gruppe 12', 45),
+    ('Familie 2 Kategorie 1 Gruppe 12', 45),
     ('Familie 1 Kategorie 2 Gruppe 12', 46),
     ('Familie 2 Kategorie 2 Gruppe 12', 46),
     ('Familie 1 Kategorie 3 Gruppe 12', 47),
