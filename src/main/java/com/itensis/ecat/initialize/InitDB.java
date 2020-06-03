@@ -48,7 +48,9 @@ public class InitDB {
 	private void initPromotion() {
 		Long nowMilis = new Date().getTime();
 		String imageName = CreateImage.createImage(promotionImagePath);
-		promotionRepository.saveAndFlush(new Promotion("AB SOFORT: ALLE ONLINE-BESTELLUNGEN VERSANDKOSTENFREI!", "VERSANDKOSTEN WERDEN AUTOMATISCH ABGEZOGEN", imageName, nowMilis, nowMilis + 604800000L, nowMilis));
+		for(int i = 0; i < 10; i++){
+			promotionRepository.saveAndFlush(new Promotion("AB SOFORT: ALLE ONLINE-BESTELLUNGEN VERSANDKOSTENFREI!", "VERSANDKOSTEN WERDEN AUTOMATISCH ABGEZOGEN", imageName, nowMilis, nowMilis + 604800000L, nowMilis));
+		}
 	}
 
 	private void initializeProducts() {
