@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "LOGIN_USER")
 public class User extends AbstractEntity{
 
-	@Column(nullable = false, name = "NAME")
+	@Column(nullable = false, unique = true, name = "NAME")
 	private String name;
 
 	@Column(nullable = false, name = "PASSWORD")
