@@ -64,8 +64,10 @@ public class InitDB {
 		}
 	}
 
-	private User initUser(List<Permission> permissions) {
-		return userRepository.saveAndFlush(new User("admin", bCryptPasswordEncoder.encode("admin"), permissions, new Date().getTime()));
+	private void initUser(List<Permission> permissions) {
+		for(int i = 0; i < 10; i++){
+			userRepository.saveAndFlush(new User("admin" + i, bCryptPasswordEncoder.encode("admin"), permissions, new Date().getTime()));
+		}
 	}
 
 	private List<Permission> initPermissions() {
