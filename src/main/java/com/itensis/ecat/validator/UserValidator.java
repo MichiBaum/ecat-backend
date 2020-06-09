@@ -43,5 +43,8 @@ public class UserValidator implements Validator {
                 errors.reject("user.password.isEmpty");
             }
         }
+        if(saveUserDto.getPermissions().isEmpty()){
+            errors.reject("user.permissions.isEmpty");
+        }
     }
 }
