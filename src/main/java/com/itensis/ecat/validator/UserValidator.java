@@ -38,6 +38,10 @@ public class UserValidator implements Validator {
             }else{
                 errors.reject("user.id.notValid");
             }
+        }else{
+            if(saveUserDto.getPassword() == null || saveUserDto.getPassword().isBlank()){
+                errors.reject("user.password.isEmpty");
+            }
         }
     }
 }
