@@ -81,8 +81,12 @@ public class UserRestController {
 		User user;
 		Optional<User> currentlyLoggedUser = userService.get(principal.getName());
 		if(currentlyLoggedUser.isPresent()){
-			if(saveUserDto.getId() != null && saveUserDto.getId().equals(currentlyLoggedUser.get().getId())){
-				user = userService.update(currentlyLoggedUser.get(), saveUserDto);
+			if(saveUserDto.getId().equals(currentlyLoggedUser.get().getId())){
+				if(saveUserDto.getPermissions().equals(currentlyLoggedUser.get().getPermissions())){
+					user = userService.update(currentlyLoggedUser.get(), saveUserDto);
+				}else{
+					return new ResponseEntity(HttpStatus.FORBIDDEN);
+				}
 			}else if(currentlyLoggedUser.get().getPermissions().stream()
 					.anyMatch(permission -> permission.getName().equals(PermissionName.ADMINISTRATE_ADMINS))){
 				if(saveUserDto.getId() == null || saveUserDto.getId() == 0){
