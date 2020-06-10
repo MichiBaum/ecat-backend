@@ -3,6 +3,7 @@ package com.itensis.ecat.services;
 import com.itensis.ecat.domain.Permission;
 import com.itensis.ecat.domain.PermissionName;
 import com.itensis.ecat.domain.User;
+import com.itensis.ecat.domain.UserValidationResult;
 import com.itensis.ecat.dtos.SaveUserDto;
 import com.itensis.ecat.repository.PermissionRepository;
 import com.itensis.ecat.repository.UserRepository;
@@ -57,5 +58,34 @@ public class UserService {
 			user.setPermissions(permissions);
 		}
 		return user;
+	}
+
+	public UserValidationResult validate(SaveUserDto saveUserDto, User currentlyLoggedUser) {
+		boolean currentUserCanAdministrateAdmins = currentlyLoggedUser.hasPermission(PermissionName.ADMINISTRATE_ADMINS);
+		boolean isNewUser = saveUserDto.getId() == null || saveUserDto.getId() == 0;
+		boolean isOwnDtoUser = !isNewUser && saveUserDto.getId().equals(currentlyLoggedUser.getId());
+		boolean permissionsNotChanged = usersPermissionNotChanged(saveUserDto, currentlyLoggedUser);
+
+		if(!isNewUser && isOwnDtoUser && permissionsNotChanged){
+			return UserValidationResult.OWN_USER_PERMISSION_NOT_CHANGED;
+		}
+
+		if(currentUserCanAdministrateAdmins && isNewUser){
+			return UserValidationResult.ADMIN_NEW_USER;
+		}
+
+		if(currentUserCanAdministrateAdmins){
+			return UserValidationResult.CAN_ADMINISTRATE_USERS;
+		}
+
+		return UserValidationResult.NONE;
+	}
+
+	private boolean usersPermissionNotChanged(SaveUserDto saveUserDto, User currentlyLoggedUser) {
+		return currentlyLoggedUser.getPermissions().stream()
+				.map(Permission::getName)
+				.map(PermissionName::toString)
+				.collect(Collectors.toList())
+				.equals(saveUserDto.getPermissions());
 	}
 }

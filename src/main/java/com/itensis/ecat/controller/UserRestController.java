@@ -78,32 +78,42 @@ public class UserRestController {
 	@ApiOperation(value = "Update or create a User")
 	@RequestMapping(value = "/api/users/save", method = RequestMethod.POST)
 	public ResponseEntity saveUser(@RequestBody @Valid SaveUserDto saveUserDto, Principal principal){
-		User user;
-		Optional<User> currentlyLoggedUser = userService.get(principal.getName());
-		if(currentlyLoggedUser.isPresent()){
-			if(saveUserDto.getId().equals(currentlyLoggedUser.get().getId())){
-				if(saveUserDto.getPermissions().equals(currentlyLoggedUser.get().getPermissions())){
-					user = userService.update(currentlyLoggedUser.get(), saveUserDto);
-				}else{
-					return new ResponseEntity(HttpStatus.FORBIDDEN);
-				}
-			}else if(currentlyLoggedUser.get().hasPermission(PermissionName.ADMINISTRATE_ADMINS)){
-				if(saveUserDto.getId() == null || saveUserDto.getId() == 0){
-					user = userConverter.toEntity(saveUserDto);
-				}else{
-					Optional<User> oldUser = userService.get(saveUserDto.getId());
-					if(oldUser.isPresent()) {
-						user = userService.update(oldUser.get(), saveUserDto);
-					}else {
-						return new ResponseEntity(HttpStatus.BAD_REQUEST);
-					}
-				}
-			}else{
-				return new ResponseEntity(HttpStatus.FORBIDDEN);
+		User currentlyLoggedUser = userService.get(principal.getName()).orElseThrow();
+		UserValidationResult userValidationResult = userService.validate(saveUserDto, currentlyLoggedUser);
+		ResponseEntity httpResponse = new ResponseEntity(HttpStatus.FORBIDDEN);
+
+		switch (userValidationResult)
+		{
+			case OWN_USER_PERMISSION_NOT_CHANGED: {
+				User updatedUser = userService.update(currentlyLoggedUser, saveUserDto);
+				httpResponse = httpOKwithSavedAndConvertedDto(updatedUser);
+				break;
 			}
-			return new ResponseEntity(userConverter.toDto(userService.save(user)), HttpStatus.OK);
+			case ADMIN_NEW_USER: {
+				User newUser = userConverter.toEntity(saveUserDto);
+				httpResponse = httpOKwithSavedAndConvertedDto(newUser);
+				break;
+			}
+			case CAN_ADMINISTRATE_USERS: {
+				Optional<User> oldUser = userService.get(saveUserDto.getId());
+				if(oldUser.isEmpty()) { return new ResponseEntity(HttpStatus.BAD_REQUEST); }
+				User updatedUser = userService.update(oldUser.get(), saveUserDto);
+				httpResponse = httpOKwithSavedAndConvertedDto(updatedUser);
+				break;
+			}
+			case NONE: httpResponse = new ResponseEntity(HttpStatus.FORBIDDEN); break;
 		}
-		return new ResponseEntity(HttpStatus.NOT_FOUND);
+		return httpResponse;
+	}
+
+	private ResponseEntity httpOKwithSavedAndConvertedDto(User updatedUser) {
+		return httpResponseOKWith(userConverter.toDto(userService.save(updatedUser)));
+	}
+
+
+
+	private ResponseEntity httpResponseOKWith(ReturnUserDto user){
+		return new ResponseEntity(user, HttpStatus.OK);
 	}
 
 }
