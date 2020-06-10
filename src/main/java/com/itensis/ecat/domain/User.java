@@ -30,6 +30,6 @@ public class User extends AbstractEntity{
 
 	public boolean hasPermission(PermissionName permissionName){
 		return permissions.stream()
-				.anyMatch(permission -> permission.getName().equals(PermissionName.ADMINISTRATE_ADMINS));
+				.anyMatch(permission -> permission.getName().equals(permissionName));
 	}
 }
