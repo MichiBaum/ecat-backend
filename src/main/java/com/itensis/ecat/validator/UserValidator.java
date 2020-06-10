@@ -29,13 +29,12 @@ public class UserValidator implements Validator {
     }
 
     private void validateObject(SaveUserDto saveUserDto, Errors errors) {
-        if(saveUserDto.getId() != null && saveUserDto.getId() != 0){
-            Optional<User> optUser = userRepository.findById(saveUserDto.getId());
-            if(optUser.isPresent()){
-                if(!optUser.get().getName().equals(saveUserDto.getName()) && userRepository.findByName(saveUserDto.getName()).isPresent()){
-                    errors.reject("user.name.isForgiven");
-                }
-            }else{
+        Optional<User> sameNameUser = userRepository.findByName(saveUserDto.getName());
+        boolean isNewUser = saveUserDto.getId() == null || saveUserDto.getId() == 0;
+        boolean hasMatchingName = sameNameUser.isPresent() && !sameNameUser.get().getId().equals(saveUserDto.getId());
+        if(!isNewUser){
+            Optional<User> oldUser = userRepository.findById(saveUserDto.getId());
+            if(!oldUser.isPresent()){
                 errors.reject("user.id.notValid");
             }
         }else{
@@ -45,6 +44,9 @@ public class UserValidator implements Validator {
         }
         if(saveUserDto.getPermissions().isEmpty()){
             errors.reject("user.permissions.isEmpty");
+        }
+        if(hasMatchingName){
+            errors.reject("user.name.isForgiven");
         }
     }
 }
