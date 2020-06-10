@@ -87,8 +87,7 @@ public class UserRestController {
 				}else{
 					return new ResponseEntity(HttpStatus.FORBIDDEN);
 				}
-			}else if(currentlyLoggedUser.get().getPermissions().stream()
-					.anyMatch(permission -> permission.getName().equals(PermissionName.ADMINISTRATE_ADMINS))){
+			}else if(currentlyLoggedUser.get().hasPermission(PermissionName.ADMINISTRATE_ADMINS)){
 				if(saveUserDto.getId() == null || saveUserDto.getId() == 0){
 					user = userConverter.toEntity(saveUserDto);
 				}else{

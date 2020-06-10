@@ -28,4 +28,8 @@ public class User extends AbstractEntity{
 	@Column(nullable = false, name = "CREATION_DATE")
 	private Long creationDate;
 
+	public boolean hasPermission(PermissionName permissionName){
+		return permissions.stream()
+				.anyMatch(permission -> permission.getName().equals(PermissionName.ADMINISTRATE_ADMINS));
+	}
 }
