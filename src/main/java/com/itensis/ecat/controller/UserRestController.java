@@ -46,7 +46,7 @@ public class UserRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@PreAuthorize("hasAnyAuthority('ADMINISTRATE', 'ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "GET currently logged in user")
 	@RequestMapping(value = "/api/user", method = RequestMethod.GET)
 	public ResponseEntity getUser(Principal principal){
@@ -74,7 +74,7 @@ public class UserRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@PreAuthorize("hasAnyAuthority('ADMINISTRATE', 'ADMINISTRATE_ADMINS')")
 	@ApiOperation(value = "Update or create a User")
 	@RequestMapping(value = "/api/users/save", method = RequestMethod.POST)
 	public ResponseEntity saveUser(@RequestBody @Valid SaveUserDto saveUserDto, Principal principal){
