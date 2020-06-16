@@ -74,7 +74,7 @@ public class UserService {
 			return UserValidationResult.ADMIN_NEW_USER;
 		}
 
-		if(currentUserCanAdministrateAdmins){
+		if(currentUserCanAdministrateAdmins && !isOwnDtoUser){
 			return UserValidationResult.CAN_ADMINISTRATE_USERS;
 		}
 
