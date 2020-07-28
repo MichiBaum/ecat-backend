@@ -13,13 +13,17 @@ import com.itensis.ecat.validator.ProductValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +37,9 @@ public class ProductRestController {
 	private final ProductConverter productConverter;
 	private final ProductService productService;
 	private final ProductValidator productValidator;
+
+	@Resource
+	private Environment environment;
 
 	@InitBinder("saveProductDto")
 	public void initSaveProductBinder(WebDataBinder binder) {
@@ -90,6 +97,22 @@ public class ProductRestController {
 			}
 		}
 		return new ResponseEntity(productConverter.toDto(productService.save(product)), HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@ApiOperation(value = "UPDATE imagepath for product with specific ID")
+	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
+	public ResponseEntity deleteProduct(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
+		String imagePath = environment.getRequiredProperty("product.image.path") + image.getOriginalFilename();
+		try{
+			image.transferTo(new File(imagePath));
+		} catch (Exception e){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		product.setPictureName(imagePath);
+		productService.save(product);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 
 	@CrossOrigin
