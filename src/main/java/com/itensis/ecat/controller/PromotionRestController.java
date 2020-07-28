@@ -8,6 +8,7 @@ import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
 import com.itensis.ecat.dtos.SavePromotionDto;
+import com.itensis.ecat.services.ImageService;
 import com.itensis.ecat.services.PromotionService;
 import com.itensis.ecat.validator.PromotionValidator;
 import io.swagger.annotations.Api;
@@ -35,6 +36,7 @@ public class PromotionRestController {
 	private final PromotionService promotionService;
 	private final PromotionConverter promotionConverter;
 	private final PromotionValidator promotionValidator;
+	private final ImageService imageService;
 
 	@Resource
 	private Environment environment;
@@ -95,16 +97,16 @@ public class PromotionRestController {
 	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
 	public ResponseEntity savePromotionImage(@PathVariable(value = "id") Promotion promotion, @RequestParam("image") MultipartFile image){
 		String imagePath = environment.getRequiredProperty("promotion.image.path") + image.getOriginalFilename();
-		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
-		if(!Arrays.asList(allowedTypes).contains(image.getOriginalFilename().split("\\.")[1])){
+		String[] allowedTypes = environment.getRequiredProperty("promotion.image.types", String[].class);
+		if(!imageService.validImageType(image, allowedTypes)){
 			Map<String, String> responseMap = new HashMap();
-			responseMap.put("errorMsg", "product.image.invalidType");
-			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+			responseMap.put("errorMsg", "promotion.image.invalidType");
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		try{
-			image.transferTo(new File(imagePath));
+			imageService.saveImage(image, imagePath);
 		} catch (Exception e){
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		promotion.setPictureName(image.getOriginalFilename());
 		promotionService.save(promotion);

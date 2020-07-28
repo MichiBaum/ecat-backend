@@ -8,6 +8,7 @@ import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.dtos.ProductSearchDto;
 import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.dtos.SaveProductDto;
+import com.itensis.ecat.services.ImageService;
 import com.itensis.ecat.services.ProductService;
 import com.itensis.ecat.validator.ProductValidator;
 import io.swagger.annotations.Api;
@@ -35,6 +36,7 @@ public class ProductRestController {
 	private final ProductConverter productConverter;
 	private final ProductService productService;
 	private final ProductValidator productValidator;
+	private final ImageService imageService;
 
 	@Resource
 	private Environment environment;
@@ -100,19 +102,20 @@ public class ProductRestController {
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "UPDATE imagepath for product with specific ID")
-	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/promotion/image/{id}", method = RequestMethod.POST)
 	public ResponseEntity saveProductImage(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
 		String imagePath = environment.getRequiredProperty("product.image.path") + image.getOriginalFilename();
 		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
-		if(!Arrays.asList(allowedTypes).contains(image.getOriginalFilename().split("\\.")[1])){
+
+		if(!imageService.validImageType(image, allowedTypes)){
 			Map<String, String> responseMap = new HashMap();
 			responseMap.put("errorMsg", "product.image.invalidType");
-			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 		try{
-			image.transferTo(new File(imagePath));
+			imageService.saveImage(image, imagePath);
 		} catch (Exception e){
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		product.setPictureName(image.getOriginalFilename());
 		productService.save(product);
