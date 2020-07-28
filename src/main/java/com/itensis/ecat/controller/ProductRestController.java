@@ -24,9 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.io.File;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -105,6 +103,12 @@ public class ProductRestController {
 	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
 	public ResponseEntity deleteProduct(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
 		String imagePath = environment.getRequiredProperty("product.image.path") + image.getOriginalFilename();
+		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
+		if(!Arrays.asList(allowedTypes).contains(image.getOriginalFilename().split("\\.")[1])){
+			Map<String, String> responseMap = new HashMap();
+			responseMap.put("errorMsg", "product.image.invalidType");
+			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+		}
 		try{
 			image.transferTo(new File(imagePath));
 		} catch (Exception e){
