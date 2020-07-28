@@ -101,7 +101,7 @@ public class ProductRestController {
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "UPDATE imagepath for product with specific ID")
 	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
-	public ResponseEntity deleteProduct(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
+	public ResponseEntity saveProductImage(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
 		String imagePath = environment.getRequiredProperty("product.image.path") + image.getOriginalFilename();
 		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
 		if(!Arrays.asList(allowedTypes).contains(image.getOriginalFilename().split("\\.")[1])){
