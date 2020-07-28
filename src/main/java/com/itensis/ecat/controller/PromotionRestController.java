@@ -4,6 +4,7 @@ import com.itensis.ecat.annotation.Character;
 import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionConverter;
+import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
 import com.itensis.ecat.dtos.SavePromotionDto;
@@ -12,15 +13,18 @@ import com.itensis.ecat.validator.PromotionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import java.io.File;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,6 +35,9 @@ public class PromotionRestController {
 	private final PromotionService promotionService;
 	private final PromotionConverter promotionConverter;
 	private final PromotionValidator promotionValidator;
+
+	@Resource
+	private Environment environment;
 
 	@InitBinder("savePromotionDto")
 	public void initSavePromotionBinder(WebDataBinder binder) {
@@ -80,6 +87,28 @@ public class PromotionRestController {
 			}
 		}
 		return new ResponseEntity(promotionConverter.toDto(promotionService.save(promotion)), HttpStatus.OK);
+	}
+
+	@CrossOrigin
+	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@ApiOperation(value = "UPDATE imagepath for promotion with specific ID")
+	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
+	public ResponseEntity savePromotionImage(@PathVariable(value = "id") Promotion promotion, @RequestParam("image") MultipartFile image){
+		String imagePath = environment.getRequiredProperty("promotion.image.path") + image.getOriginalFilename();
+		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
+		if(!Arrays.asList(allowedTypes).contains(image.getOriginalFilename().split("\\.")[1])){
+			Map<String, String> responseMap = new HashMap();
+			responseMap.put("errorMsg", "product.image.invalidType");
+			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
+		}
+		try{
+			image.transferTo(new File(imagePath));
+		} catch (Exception e){
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+		}
+		promotion.setPictureName(image.getOriginalFilename());
+		promotionService.save(promotion);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 
 }
