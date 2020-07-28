@@ -110,7 +110,7 @@ public class ProductRestController {
 		if(!imageService.validImageType(image, allowedTypes)){
 			Map<String, String> responseMap = new HashMap();
 			responseMap.put("errorMsg", "product.image.invalidType");
-			return new ResponseEntity(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
 		}
 		try{
 			imageService.saveImage(image, imagePath);
