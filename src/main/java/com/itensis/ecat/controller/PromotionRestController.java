@@ -94,7 +94,7 @@ public class PromotionRestController {
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "UPDATE imagepath for promotion with specific ID")
-	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.POST)
 	public ResponseEntity savePromotionImage(@PathVariable(value = "id") Promotion promotion, @RequestParam("image") MultipartFile image){
 		String imagePath = environment.getRequiredProperty("promotion.image.path") + image.getOriginalFilename();
 		String[] allowedTypes = environment.getRequiredProperty("promotion.image.types", String[].class);

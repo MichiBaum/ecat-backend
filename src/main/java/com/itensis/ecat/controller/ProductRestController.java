@@ -102,7 +102,7 @@ public class ProductRestController {
 	@CrossOrigin
 	@PreAuthorize("hasAuthority('ADMINISTRATE')")
 	@ApiOperation(value = "UPDATE imagepath for product with specific ID")
-	@RequestMapping(value = "/api/promotion/image/{id}", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
 	public ResponseEntity saveProductImage(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
 		String imagePath = environment.getRequiredProperty("product.image.path") + image.getOriginalFilename();
 		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
