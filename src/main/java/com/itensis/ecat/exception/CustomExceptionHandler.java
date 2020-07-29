@@ -41,7 +41,7 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(BindException.class)
     public final ResponseEntity<? extends ErrorDetails> handleBindException(BindException ex, WebRequest request){
-        List<String> validationErrors = ex.getAllErrors().stream()
+        List<String> validationErrors = ex.getGlobalErrors().stream()
                 .map(ObjectError::getCode)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

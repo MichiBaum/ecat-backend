@@ -36,14 +36,9 @@ public class ProductImageRestController {
     @PreAuthorize("hasAuthority('ADMINISTRATE')")
     @ApiOperation(value = "UPDATE imagepath for product with specific ID")
     @RequestMapping(value = "/api/products/image", method = RequestMethod.POST)
-    public ResponseEntity saveProductImage(@RequestPart(value = "image", required = false) MultipartFile image, @ModelAttribute("saveProductImageDto") @Valid SaveProductImageDto saveProductImageDto){
-        if(!productImageService.validImageType(image)){
-            Map<String, String> responseMap = new HashMap();
-            responseMap.put("errorMsg", "product.image.invalidType");
-            return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity saveProductImage(@ModelAttribute @Valid SaveProductImageDto saveProductImageDto){
         try{
-            productImageService.saveProductImage(productImageConverter.toEntity(saveProductImageDto), image);
+            productImageService.saveProductImage(productImageConverter.toEntity(saveProductImageDto), saveProductImageDto.getImage());
         } catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
