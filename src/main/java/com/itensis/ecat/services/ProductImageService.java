@@ -36,18 +36,9 @@ public class ProductImageService {
 
     public void saveProductImage(ProductImage productImage, MultipartFile image) throws IOException {
         this.productImageRepository.saveAndFlush(productImage);
+        productImage.setImageId(productImage.getId());
+        this.productImageRepository.saveAndFlush(productImage);
         image.transferTo(new File(environment.getRequiredProperty("product.image.path") + productImage.getImageId()));
     }
 
-    public Long getImageIncrement() {
-        File file = new File(environment.getRequiredProperty("product.image.path"));
-        long amountOfFiles = 0L;
-        try{
-            amountOfFiles = file.list().length;
-        } catch (NullPointerException e){
-            return amountOfFiles;
-        }
-        return amountOfFiles;
-
-    }
 }

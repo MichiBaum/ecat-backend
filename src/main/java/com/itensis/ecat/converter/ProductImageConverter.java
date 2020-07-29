@@ -17,7 +17,7 @@ public class ProductImageConverter {
     public ProductImage toEntity(SaveProductImageDto saveProductImageDto){
         return new ProductImage(
                 saveProductImageDto.getImageName(),
-                productImageService.getImageIncrement(),
+                0L,
                 saveProductImageDto.getIndex(),
                 productService.get(saveProductImageDto.getProductId()).get()
         );
