@@ -54,13 +54,6 @@ public class ProductImageValidator implements Validator {
         if(saveProductImageDto.getIndex() == null){
             errors.reject("productImage.index.empty");
         }
-        if(saveProductImageDto.getImage() == null){
-            errors.reject("productImage.image.empty");
-        }else{
-            if(!productImageService.validImageType(saveProductImageDto.getImage())){
-                errors.reject("product.image.invalidType");
-            }
-        }
 
     }
 

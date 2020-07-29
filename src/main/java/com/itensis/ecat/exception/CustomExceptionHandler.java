@@ -2,6 +2,7 @@ package com.itensis.ecat.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +32,16 @@ public class CustomExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public final ResponseEntity<? extends ErrorDetails> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request){
         List<String> validationErrors = ex.getBindingResult().getAllErrors().stream()
+                .map(ObjectError::getCode)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        ValidationErrorDetails errorDetails = new ValidationErrorDetails(new Date().getTime(), ex.getMessage(), validationErrors, ex.getClass(), request.getDescription(false));
+        return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BindException.class)
+    public final ResponseEntity<? extends ErrorDetails> handleBindException(BindException ex, WebRequest request){
+        List<String> validationErrors = ex.getAllErrors().stream()
                 .map(ObjectError::getCode)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

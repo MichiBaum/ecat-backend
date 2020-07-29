@@ -26,7 +26,7 @@ public class ProductImageService {
     private final Environment environment;
 
     public boolean validImageType(MultipartFile image){
-        String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
+        String[] allowedTypes = environment.getRequiredProperty("product.image.mimeTypes", String[].class);
         if(!Arrays.asList(allowedTypes).contains(image.getContentType())){
             return false;
 
