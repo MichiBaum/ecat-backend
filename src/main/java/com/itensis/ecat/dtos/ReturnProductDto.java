@@ -11,7 +11,6 @@ public class ReturnProductDto {
 	private Long id;
 	private String name;
 	private String articleNr;
-	private String pictureName;
 	private String description;
 	private Double price;
 	private Long creationDate;

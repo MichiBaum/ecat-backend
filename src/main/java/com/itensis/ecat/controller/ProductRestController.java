@@ -8,7 +8,7 @@ import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.dtos.ProductSearchDto;
 import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.dtos.SaveProductDto;
-import com.itensis.ecat.services.ImageService;
+import com.itensis.ecat.services.ProductImageService;
 import com.itensis.ecat.services.ProductService;
 import com.itensis.ecat.validator.ProductValidator;
 import io.swagger.annotations.Api;
@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,10 +35,6 @@ public class ProductRestController {
 	private final ProductConverter productConverter;
 	private final ProductService productService;
 	private final ProductValidator productValidator;
-	private final ImageService imageService;
-
-	@Resource
-	private Environment environment;
 
 	@InitBinder("saveProductDto")
 	public void initSaveProductBinder(WebDataBinder binder) {
@@ -99,28 +94,6 @@ public class ProductRestController {
 		return new ResponseEntity(productConverter.toDto(productService.save(product)), HttpStatus.OK);
 	}
 
-	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
-	@ApiOperation(value = "UPDATE imagepath for product with specific ID")
-	@RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
-	public ResponseEntity saveProductImage(@PathVariable(value = "id") Product product, @RequestParam("image")MultipartFile image){
-		String imagePath = environment.getRequiredProperty("product.image.path") + image.getOriginalFilename();
-		String[] allowedTypes = environment.getRequiredProperty("product.image.types", String[].class);
-
-		if(!imageService.validImageType(image, allowedTypes)){
-			Map<String, String> responseMap = new HashMap();
-			responseMap.put("errorMsg", "product.image.invalidType");
-			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
-		}
-		try{
-			imageService.saveImage(image, imagePath);
-		} catch (Exception e){
-			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		product.setPictureName(image.getOriginalFilename());
-		productService.save(product);
-		return new ResponseEntity(HttpStatus.OK);
-	}
 
 	@CrossOrigin
 	@PublicEndpoint //TODO why public

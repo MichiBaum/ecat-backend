@@ -4,11 +4,10 @@ import com.itensis.ecat.annotation.Character;
 import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionConverter;
-import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
 import com.itensis.ecat.dtos.SavePromotionDto;
-import com.itensis.ecat.services.ImageService;
+import com.itensis.ecat.services.ProductImageService;
 import com.itensis.ecat.services.PromotionService;
 import com.itensis.ecat.validator.PromotionValidator;
 import io.swagger.annotations.Api;
@@ -24,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
-import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,7 @@ public class PromotionRestController {
 	private final PromotionService promotionService;
 	private final PromotionConverter promotionConverter;
 	private final PromotionValidator promotionValidator;
-	private final ImageService imageService;
+	private final ProductImageService productImageService;
 
 	@Resource
 	private Environment environment;
@@ -91,26 +89,5 @@ public class PromotionRestController {
 		return new ResponseEntity(promotionConverter.toDto(promotionService.save(promotion)), HttpStatus.OK);
 	}
 
-	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
-	@ApiOperation(value = "UPDATE imagepath for promotion with specific ID")
-	@RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.POST)
-	public ResponseEntity savePromotionImage(@PathVariable(value = "id") Promotion promotion, @RequestParam("image") MultipartFile image){
-		String imagePath = environment.getRequiredProperty("promotion.image.path") + image.getOriginalFilename();
-		String[] allowedTypes = environment.getRequiredProperty("promotion.image.types", String[].class);
-		if(!imageService.validImageType(image, allowedTypes)){
-			Map<String, String> responseMap = new HashMap();
-			responseMap.put("errorMsg", "promotion.image.invalidType");
-			return new ResponseEntity(responseMap, HttpStatus.BAD_REQUEST);
-		}
-		try{
-			imageService.saveImage(image, imagePath);
-		} catch (Exception e){
-			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		promotion.setPictureName(image.getOriginalFilename());
-		promotionService.save(promotion);
-		return new ResponseEntity(HttpStatus.OK);
-	}
 
 }

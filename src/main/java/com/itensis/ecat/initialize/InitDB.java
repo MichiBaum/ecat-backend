@@ -54,12 +54,10 @@ public class InitDB {
 	}
 
 	private void initializeProducts() {
-		String imageName = CreateImage.createImage(productImagePath);
-
 		List<ProductFamily> productFamilies = productFamilyRepository.findAll();
 		for(ProductFamily productFamily1: productFamilies) {
 			for (int i = 0; i < 8; i++) {
-				productRepository.saveAndFlush(new Product("Product", Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 4000000 + 1)), imageName, "Speziell für die Verschraubung Holz mit Holz im Möbel und Ladenbau. Der Kopf kann mit passenden farblich abgestimmten Kappen abgedeckt werden.", 12.50, new Date().getTime(), productFamily1));
+				productRepository.saveAndFlush(new Product("Product", Integer.toString(ThreadLocalRandom.current().nextInt(1000000, 4000000 + 1)), "Speziell für die Verschraubung Holz mit Holz im Möbel und Ladenbau. Der Kopf kann mit passenden farblich abgestimmten Kappen abgedeckt werden.", 12.50, new Date().getTime(), productFamily1));
 			}
 		}
 	}

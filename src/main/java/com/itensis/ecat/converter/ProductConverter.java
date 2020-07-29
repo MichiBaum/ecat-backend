@@ -22,7 +22,6 @@ public class ProductConverter {
 				product.getId(),
 				product.getName(),
 				product.getArticleNr(),
-				product.getPictureName(),
 				product.getDescription(),
 				product.getPrice(),
 				product.getCreationDate(),
@@ -36,7 +35,6 @@ public class ProductConverter {
 				productFamily -> new Product(
 						saveProductDto.getName(),
 						saveProductDto.getArticleNr(),
-						"",
 						saveProductDto.getDescription(),
 						saveProductDto.getPrice(),
 						new Date().getTime(),
