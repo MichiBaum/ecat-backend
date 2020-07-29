@@ -41,11 +41,11 @@ public class ProductImageService {
 
     public Long getImageIncrement() {
         File file = new File(environment.getRequiredProperty("product.image.path"));
-        long amountOfFiles;
+        long amountOfFiles = 0L;
         try{
             amountOfFiles = file.list().length;
         } catch (NullPointerException e){
-            return 0L;
+            return amountOfFiles;
         }
         return amountOfFiles;
 
