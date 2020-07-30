@@ -12,5 +12,4 @@ public class ProductImageDto {
     private Long productId;
     private String imageName;
     private Long index;
-    private byte[] image;
 }

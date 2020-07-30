@@ -29,8 +29,7 @@ public class ProductImageConverter {
                 productImage.getId(),
                 productImage.getProduct().getId(),
                 productImage.getImageName(),
-                productImage.getImageIndex(),
-                productImageService.getImage(productImage.getImageId())
+                productImage.getImageIndex()
         );
     }
 }
