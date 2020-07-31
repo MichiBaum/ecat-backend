@@ -1,6 +1,8 @@
 package com.itensis.ecat.converter;
 
+import com.itensis.ecat.domain.ProductImage;
 import com.itensis.ecat.domain.PromotionImage;
+import com.itensis.ecat.dtos.PromotionImageDto;
 import com.itensis.ecat.dtos.SavePromotionImageDto;
 import com.itensis.ecat.services.PromotionService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,15 @@ public class PromotionImageConverter {
                 0L,
                 savepromotionImageDto.getIndex(),
                 promotionService.get(savepromotionImageDto.getPromotionId()).get()
+        );
+    }
+
+    public PromotionImageDto toDto(PromotionImage promotionImage){
+        return new PromotionImageDto(
+                promotionImage.getId(),
+                promotionImage.getPromotion().getId(),
+                promotionImage.getImageName(),
+                promotionImage.getImageIndex()
         );
     }
 }

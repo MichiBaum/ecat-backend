@@ -1,6 +1,7 @@
 package com.itensis.ecat.controller;
 
 import com.itensis.ecat.converter.PromotionImageConverter;
+import com.itensis.ecat.domain.PromotionImage;
 import com.itensis.ecat.dtos.SavePromotionImageDto;
 import com.itensis.ecat.services.PromotionImageService;
 import com.itensis.ecat.validator.PromotionImageValidator;
@@ -31,15 +32,31 @@ public class PromotionImageRestController {
 
     @CrossOrigin
     @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @ApiOperation(value = "UPDATE index of existing promotion image")
+    @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.POST)
+    public void updateProductImageIndex(@PathVariable(value = "id") PromotionImage promotionImage, @RequestBody Long index){
+        promotionImage.setImageIndex(index);
+        promotionImageService.savePromotionImage(promotionImage);
+    }
+
+    @CrossOrigin
+    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @ApiOperation(value = "DELETE promotion image with specific ID")
+    @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.DELETE)
+    public void deleteProductImage(@PathVariable(value = "id") PromotionImage promotionImage){ promotionImageService.deletePromotionImage(promotionImage); }
+
+    @CrossOrigin
+    @PreAuthorize("hasAuthority('ADMINISTRATE')")
     @ApiOperation(value = "UPDATE imagepath for promotion with specific ID")
     @RequestMapping(value = "/api/promotions/image", method = RequestMethod.POST)
     public ResponseEntity savePromotionImage(@ModelAttribute @Valid SavePromotionImageDto savePromotionImageDto){
+        PromotionImage promotionImageToReturn;
         try{
-            promotionImageService.savePromotionImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getImage());
+            promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getImage());
         } catch (Exception e){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity(promotionImageConverter.toDto(promotionImageToReturn), HttpStatus.OK);
     }
 
 }

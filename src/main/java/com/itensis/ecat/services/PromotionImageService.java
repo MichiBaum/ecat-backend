@@ -30,11 +30,20 @@ public class PromotionImageService {
         return true;
     }
 
-    public void savePromotionImage(PromotionImage promotionImage, MultipartFile image) throws IOException {
+    public void deletePromotionImage(PromotionImage promotionImage){
+        promotionImageRepository.delete(promotionImage);
+    }
+
+    public PromotionImage savePromotionImage(PromotionImage promotionImage){
+        return promotionImageRepository.saveAndFlush(promotionImage);
+    }
+
+    public PromotionImage savePromotionImageWithImage(PromotionImage promotionImage, MultipartFile image) throws IOException {
         this.promotionImageRepository.saveAndFlush(promotionImage);
         promotionImage.setImageId(promotionImage.getId());
         this.promotionImageRepository.saveAndFlush(promotionImage);
         image.transferTo(new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId()));
+        return promotionImage;
     }
 
 }
