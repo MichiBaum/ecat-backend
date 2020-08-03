@@ -4,6 +4,7 @@ import com.itensis.ecat.domain.ProductImage;
 import com.itensis.ecat.domain.PromotionImage;
 import com.itensis.ecat.dtos.PromotionImageDto;
 import com.itensis.ecat.dtos.SavePromotionImageDto;
+import com.itensis.ecat.services.PromotionImageService;
 import com.itensis.ecat.services.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class PromotionImageConverter {
 
     private final PromotionService promotionService;
+    private final PromotionImageService promotionImageService;
 
     public PromotionImage toEntity(SavePromotionImageDto savepromotionImageDto){
         return new PromotionImage(
@@ -28,7 +30,9 @@ public class PromotionImageConverter {
                 promotionImage.getId(),
                 promotionImage.getPromotion().getId(),
                 promotionImage.getImageName(),
-                promotionImage.getImageIndex()
+                promotionImage.getImageIndex(),
+                promotionImageService.getImageBytes(promotionImage.getImageId()),
+                promotionImageService.getImageMimeType(promotionImage.getImageId())
         );
     }
 }

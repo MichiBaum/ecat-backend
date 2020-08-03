@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
+import java.nio.file.Files;
 import java.util.*;
 
 @Service
@@ -44,6 +46,31 @@ public class PromotionImageService {
         this.promotionImageRepository.saveAndFlush(promotionImage);
         image.transferTo(new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId()));
         return promotionImage;
+    }
+
+    public byte[] getImageBytes(Long imageId){
+        File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
+        byte[] imageBytes = new byte[0];
+        try{
+            imageBytes = Files.readAllBytes(file.toPath());
+        } catch (IOException e){
+            return imageBytes;
+        }
+        return imageBytes;
+
+    }
+
+    public String getImageMimeType(Long imageId){
+        File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
+        String mimeType = "";
+        try {
+            URLConnection urlConnection = file.toURI().toURL().openConnection();
+            mimeType = urlConnection.getContentType();
+        } catch (IOException e) {
+            return mimeType;
+        }
+
+        return mimeType;
     }
 
 }
