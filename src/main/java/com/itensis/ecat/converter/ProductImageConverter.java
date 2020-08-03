@@ -1,7 +1,7 @@
 package com.itensis.ecat.converter;
 
 import com.itensis.ecat.domain.ProductImage;
-import com.itensis.ecat.dtos.ProductImageDto;
+import com.itensis.ecat.dtos.ReturnProductImageDto;
 import com.itensis.ecat.dtos.SaveProductImageDto;
 import com.itensis.ecat.services.ProductImageService;
 import com.itensis.ecat.services.ProductService;
@@ -24,8 +24,8 @@ public class ProductImageConverter {
         );
     }
 
-    public ProductImageDto toDto(ProductImage productImage){
-        return new ProductImageDto(
+    public ReturnProductImageDto toDto(ProductImage productImage){
+        return new ReturnProductImageDto(
                 productImage.getId(),
                 productImage.getProduct().getId(),
                 productImage.getImageName(),

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PromotionImageDto {
+public class ReturnPromotionImageDto {
     private Long id;
     private Long promotionId;
     private String imageName;
