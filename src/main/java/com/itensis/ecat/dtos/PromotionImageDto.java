@@ -12,6 +12,6 @@ public class PromotionImageDto {
     private Long promotionId;
     private String imageName;
     private Long index;
-    private byte[] image;
+    private byte[] file;
     private String mimeType;
 }
