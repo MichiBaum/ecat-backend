@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
@@ -40,21 +42,25 @@ public class PromotionImageService {
         return promotionImageRepository.saveAndFlush(promotionImage);
     }
 
-    public PromotionImage savePromotionImageWithImage(PromotionImage promotionImage, MultipartFile image) throws IOException {
-        this.promotionImageRepository.saveAndFlush(promotionImage);
-        promotionImage.setImageId(promotionImage.getId());
-        this.promotionImageRepository.saveAndFlush(promotionImage);
-        image.transferTo(new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId()));
+    public PromotionImage savePromotionImageWithImage(PromotionImage promotionImage, MultipartFile image) {
+        try{
+            this.promotionImageRepository.saveAndFlush(promotionImage);
+            promotionImage.setImageId(promotionImage.getId());
+            this.promotionImageRepository.saveAndFlush(promotionImage);
+            image.transferTo(new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId()));
+        }catch (IOException e){
+            throw new RuntimeException(e.getMessage());
+        }
         return promotionImage;
     }
 
     public byte[] getImageBytes(Long imageId){
         File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
-        byte[] imageBytes = new byte[0];
+        byte[] imageBytes;
         try{
             imageBytes = Files.readAllBytes(file.toPath());
         } catch (IOException e){
-            return imageBytes;
+            throw new RuntimeException(e.getMessage());
         }
         return imageBytes;
 
@@ -62,15 +68,39 @@ public class PromotionImageService {
 
     public String getImageMimeType(Long imageId){
         File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
-        String mimeType = "";
+        String mimeType;
         try {
             URLConnection urlConnection = file.toURI().toURL().openConnection();
             mimeType = urlConnection.getContentType();
         } catch (IOException e) {
-            return mimeType;
+            throw new RuntimeException(e.getMessage());
         }
 
         return mimeType;
+    }
+
+    private void resizeImage(Long imageId){
+        try{
+            String mimeType = getImageMimeType(imageId);
+            File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
+            BufferedImage bufferedImage = ImageIO.read(file);
+            int croppedHeight;
+            int croppedWidth;
+            double aspectRatio = 4D/3D;
+
+            if(bufferedImage.getWidth() < bufferedImage.getHeight() || bufferedImage.getWidth() == bufferedImage.getHeight()){
+                croppedHeight = (int) Math.round(bufferedImage.getWidth() / aspectRatio);
+                croppedWidth = bufferedImage.getWidth();
+            }else{
+                croppedHeight = bufferedImage.getHeight();
+                croppedWidth = (int) Math.round(bufferedImage.getWidth() / aspectRatio);
+            }
+
+            BufferedImage croppedImage = bufferedImage.getSubimage((bufferedImage.getWidth() - croppedWidth) / 2, (bufferedImage.getHeight() - croppedHeight) / 2, croppedWidth, croppedHeight);
+            ImageIO.write(croppedImage, mimeType.substring(mimeType.lastIndexOf("/") + 1), file);
+        } catch (IOException e){
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
 }

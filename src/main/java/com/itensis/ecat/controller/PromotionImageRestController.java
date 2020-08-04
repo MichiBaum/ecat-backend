@@ -51,11 +51,7 @@ public class PromotionImageRestController {
     @RequestMapping(value = "/api/promotions/image", method = RequestMethod.POST)
     public ResponseEntity savePromotionImage(@ModelAttribute @Valid SavePromotionImageDto savePromotionImageDto){
         PromotionImage promotionImageToReturn;
-        try{
-            promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getImage());
-        } catch (Exception e){
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getImage());
         return new ResponseEntity(promotionImageConverter.toDto(promotionImageToReturn), HttpStatus.OK);
     }
 
