@@ -1,5 +1,6 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionImageConverter;
 import com.itensis.ecat.domain.PromotionImage;
 import com.itensis.ecat.dtos.SavePromotionImageDto;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
@@ -51,8 +53,21 @@ public class PromotionImageRestController {
     @RequestMapping(value = "/api/promotions/image", method = RequestMethod.POST)
     public ResponseEntity savePromotionImage(@ModelAttribute @Valid SavePromotionImageDto savePromotionImageDto){
         PromotionImage promotionImageToReturn;
-        promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getImage());
+        promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getFile());
         return new ResponseEntity(promotionImageConverter.toDto(promotionImageToReturn), HttpStatus.OK);
     }
 
+    @CrossOrigin
+    @PublicEndpoint
+    @ApiOperation(value = "GET image with specific id")
+    @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.GET, produces = {"image/jpeg", "image/png"})
+    public ResponseEntity getPromotionImages(@PathVariable(value = "id") PromotionImage promotionImage){
+        return provideFilePath(promotionImage.getImageId());
+    }
+
+    private ResponseEntity<byte[]> provideFilePath(Long imageId){
+        byte[] media = promotionImageService.getImageBytes(imageId);
+
+        return new ResponseEntity<>(media, HttpStatus.OK);
+    }
 }

@@ -1,5 +1,6 @@
 package com.itensis.ecat.controller;
 
+import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.ProductImageConverter;
 import com.itensis.ecat.domain.ProductImage;
 import com.itensis.ecat.dtos.SaveProductImageDto;
@@ -53,8 +54,22 @@ public class ProductImageRestController {
     @RequestMapping(value = "/api/products/image", method = RequestMethod.POST)
     public ResponseEntity saveProductImage(@ModelAttribute @Valid SaveProductImageDto saveProductImageDto) throws IOException {
         ProductImage productImageToReturn;
-        productImageToReturn = productImageService.saveProductImageWithImage(productImageConverter.toEntity(saveProductImageDto), saveProductImageDto.getImage());
+        productImageToReturn = productImageService.saveProductImageWithImage(productImageConverter.toEntity(saveProductImageDto), saveProductImageDto.getFile());
         return new ResponseEntity(productImageConverter.toDto(productImageToReturn), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @PublicEndpoint
+    @ApiOperation(value = "GET image with specific id")
+    @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.GET, produces = {"image/jpeg", "image/png"})
+    public ResponseEntity getProductImage(@PathVariable(value = "id") ProductImage productImage){
+        return provideFilePath(productImage.getImageId());
+    }
+
+    private ResponseEntity<byte[]> provideFilePath(Long imageId){
+        byte[] media = productImageService.getImageBytes(imageId);
+
+        return new ResponseEntity<>(media, HttpStatus.OK);
     }
 
 }

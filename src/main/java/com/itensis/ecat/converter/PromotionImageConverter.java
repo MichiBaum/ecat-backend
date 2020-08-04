@@ -17,7 +17,7 @@ public class PromotionImageConverter {
 
     public PromotionImage toEntity(SavePromotionImageDto savepromotionImageDto){
         return new PromotionImage(
-                savepromotionImageDto.getImageName(),
+                savepromotionImageDto.getFileName(),
                 0L,
                 savepromotionImageDto.getIndex(),
                 promotionService.get(savepromotionImageDto.getPromotionId()).get()
@@ -27,11 +27,8 @@ public class PromotionImageConverter {
     public ReturnPromotionImageDto toDto(PromotionImage promotionImage){
         return new ReturnPromotionImageDto(
                 promotionImage.getId(),
-                promotionImage.getPromotion().getId(),
                 promotionImage.getImageName(),
-                promotionImage.getImageIndex(),
-                promotionImageService.getImageBytes(promotionImage.getImageId()),
-                promotionImageService.getImageMimeType(promotionImage.getImageId())
+                promotionImage.getImageIndex()
         );
     }
 }

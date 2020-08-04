@@ -54,14 +54,14 @@ public class ProductImageValidator implements Validator {
         if(saveProductImageDto.getIndex() == null){
             errors.reject("productImage.index.empty");
         }
-        if(saveProductImageDto.getImage() == null){
-            errors.reject("productImage.image.empty");
+        if(saveProductImageDto.getFile() == null){
+            errors.reject("productImage.file.empty");
         }else{
-            if(!productImageService.validImageType(saveProductImageDto.getImage())){
-                errors.reject("productImage.image.invalidType");
+            if(!productImageService.validImageType(saveProductImageDto.getFile())){
+                errors.reject("productImage.file.invalidType");
             }
-            if(saveProductImageDto.getImageName() == null || saveProductImageDto.getImageName().isBlank()){
-                errors.reject("productImage.imageName.notValid");
+            if(saveProductImageDto.getFileName() == null || saveProductImageDto.getFileName().isBlank()){
+                errors.reject("productImage.fileName.notValid");
             }
         }
 

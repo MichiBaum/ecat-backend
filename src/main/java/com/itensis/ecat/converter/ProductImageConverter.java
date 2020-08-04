@@ -17,7 +17,7 @@ public class ProductImageConverter {
 
     public ProductImage toEntity(SaveProductImageDto saveProductImageDto){
         return new ProductImage(
-                saveProductImageDto.getImageName(),
+                saveProductImageDto.getFileName(),
                 0L,
                 saveProductImageDto.getIndex(),
                 productService.get(saveProductImageDto.getProductId()).get()
@@ -27,11 +27,8 @@ public class ProductImageConverter {
     public ReturnProductImageDto toDto(ProductImage productImage){
         return new ReturnProductImageDto(
                 productImage.getId(),
-                productImage.getProduct().getId(),
                 productImage.getImageName(),
-                productImage.getImageIndex(),
-                productImageService.getImageBytes(productImage.getImageId()),
-                productImageService.getImageMimeType(productImage.getImageId())
+                productImage.getImageIndex()
         );
     }
 }

@@ -46,14 +46,14 @@ public class PromotionImageValidator implements Validator {
         if(savePromotionImageDto.getIndex() == null){
             errors.reject("promotionImage.index.empty");
         }
-        if(savePromotionImageDto.getImage() == null){
-            errors.reject("promotionImage.image.empty");
+        if(savePromotionImageDto.getFile() == null){
+            errors.reject("promotionImage.file.empty");
         }else{
-            if(!promotionImageService.validImageType(savePromotionImageDto.getImage())){
-                errors.reject("promotionImage.image.invalidType");
+            if(!promotionImageService.validImageType(savePromotionImageDto.getFile())){
+                errors.reject("promotionImage.file.invalidType");
             }
-            if(savePromotionImageDto.getImageName() == null || savePromotionImageDto.getImageName().isBlank()){
-                errors.reject("promotionImage.imageName.notValid");
+            if(savePromotionImageDto.getFileName() == null || savePromotionImageDto.getFileName().isBlank()){
+                errors.reject("promotionImage.fileName.notValid");
             }
         }
 

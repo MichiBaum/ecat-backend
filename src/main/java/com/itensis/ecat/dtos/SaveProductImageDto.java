@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SaveProductImageDto {
     private Long id;
     private Long productId;
-    private String imageName;
+    private String fileName;
     private Long index;
-    private MultipartFile image;
+    private MultipartFile file;
 }

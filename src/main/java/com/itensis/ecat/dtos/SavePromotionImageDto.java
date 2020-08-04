@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SavePromotionImageDto {
     private Long id;
     private Long promotionId;
-    private String imageName;
+    private String fileName;
     private Long index;
-    private MultipartFile image;
+    private MultipartFile file;
 }

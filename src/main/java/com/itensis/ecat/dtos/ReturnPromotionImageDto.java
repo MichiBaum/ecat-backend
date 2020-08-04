@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ReturnPromotionImageDto {
     private Long id;
-    private Long promotionId;
-    private String imageName;
+    private String fileName;
     private Long index;
-    private byte[] file;
-    private String mimeType;
 }
