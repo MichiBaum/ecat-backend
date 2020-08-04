@@ -48,6 +48,7 @@ public class PromotionImageService {
             promotionImage.setImageId(promotionImage.getId());
             this.promotionImageRepository.saveAndFlush(promotionImage);
             image.transferTo(new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId()));
+            resizeImage(promotionImage.getImageId());
         }catch (IOException e){
             throw new RuntimeException(e.getMessage());
         }
