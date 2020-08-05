@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class ProductImageConverter {
 
     private final ProductService productService;
-    private final ProductImageService productImageService;
 
     public ProductImage toEntity(SaveProductImageDto saveProductImageDto){
         return new ProductImage(

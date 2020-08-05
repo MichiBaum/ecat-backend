@@ -28,7 +28,8 @@ public class PromotionImageConverter {
         return new ReturnPromotionImageDto(
                 promotionImage.getId(),
                 promotionImage.getImageName(),
-                promotionImage.getImageIndex()
+                promotionImage.getImageIndex(),
+                "http://localhost:8080/api/promotions/image/" + promotionImage.getImageId()
         );
     }
 }
