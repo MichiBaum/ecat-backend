@@ -5,6 +5,7 @@ import com.itensis.ecat.dtos.ProductSearchDto;
 import com.itensis.ecat.dtos.SaveProductDto;
 import com.itensis.ecat.repository.ProductClassRepository;
 import com.itensis.ecat.repository.ProductFamilyRepository;
+import com.itensis.ecat.repository.ProductImageRepository;
 import com.itensis.ecat.repository.ProductRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,8 +27,10 @@ public class ProductService {
 	private final ProductRepository productRepository;
 	private final ProductFamilyRepository productFamilyRepository;
 	private final ProductClassRepository productClassRepository;
+	private final ProductImageRepository productImageRepository;
 
 	public void delete(Product product) {
+		productImageRepository.deleteAllByProductId(product.getId());
 		productRepository.delete(product);
 	}
 
