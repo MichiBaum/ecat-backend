@@ -85,12 +85,12 @@ public class ProductImageService {
             int croppedWidth;
             double aspectRatio = 4D/3D;
 
-            if(bufferedImage.getWidth() < bufferedImage.getHeight() || bufferedImage.getWidth() == bufferedImage.getHeight()){
+            if(bufferedImage.getWidth() > bufferedImage.getHeight()){
+                croppedHeight = bufferedImage.getHeight();
+                croppedWidth = (int) Math.round(bufferedImage.getHeight() * aspectRatio);
+            }else{
                 croppedHeight = (int) Math.round(bufferedImage.getWidth() / aspectRatio);
                 croppedWidth = bufferedImage.getWidth();
-            }else{
-                croppedHeight = bufferedImage.getHeight();
-                croppedWidth = (int) Math.round(bufferedImage.getWidth() / aspectRatio);
             }
 
             BufferedImage croppedImage = bufferedImage.getSubimage((bufferedImage.getWidth() - croppedWidth) / 2, (bufferedImage.getHeight() - croppedHeight) / 2, croppedWidth, croppedHeight);
