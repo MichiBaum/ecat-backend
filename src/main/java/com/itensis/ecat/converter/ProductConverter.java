@@ -5,17 +5,22 @@ import com.itensis.ecat.domain.ProductFamily;
 import com.itensis.ecat.dtos.ReturnProductDto;
 import com.itensis.ecat.dtos.SaveProductDto;
 import com.itensis.ecat.repository.ProductFamilyRepository;
+import com.itensis.ecat.repository.ProductImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class ProductConverter {
 
 	private final ProductFamilyRepository productFamilyRepository;
+	private final ProductImageRepository productImageRepository;
+	private final ProductImageConverter productImageConverter;
 
 	public ReturnProductDto toDto(Product product){
 		return new ReturnProductDto(
@@ -25,7 +30,9 @@ public class ProductConverter {
 				product.getDescription(),
 				product.getPrice(),
 				product.getCreationDate(),
-				product.getProductFamily().getId()
+				product.getProductFamily().getId(),
+				productImageRepository.findAllByProductId(product.getId()).stream().map(productImageConverter::toDto).collect(Collectors.toList())
+
 		);
 	}
 

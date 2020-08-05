@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,4 +17,5 @@ public class ReturnProductDto {
 	private Double price;
 	private Long creationDate;
 	private Long productFamilyId;
+	private List<ReturnProductImageDto> returnProductImageDtos;
 }

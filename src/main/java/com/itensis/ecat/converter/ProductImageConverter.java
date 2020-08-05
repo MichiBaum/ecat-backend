@@ -28,7 +28,8 @@ public class ProductImageConverter {
         return new ReturnProductImageDto(
                 productImage.getId(),
                 productImage.getImageName(),
-                productImage.getImageIndex()
+                productImage.getImageIndex(),
+                "http://localhost:8080/api/products/image/" + productImage.getImageId()
         );
     }
 }

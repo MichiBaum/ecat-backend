@@ -11,4 +11,5 @@ public class ReturnProductImageDto {
     private Long id;
     private String fileName;
     private Long index;
+    private String url;
 }
