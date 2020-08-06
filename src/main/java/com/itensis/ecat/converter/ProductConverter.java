@@ -3,12 +3,14 @@ package com.itensis.ecat.converter;
 import com.itensis.ecat.domain.Product;
 import com.itensis.ecat.domain.ProductFamily;
 import com.itensis.ecat.dtos.ReturnProductDto;
+import com.itensis.ecat.dtos.ReturnProductImageDto;
 import com.itensis.ecat.dtos.SaveProductDto;
 import com.itensis.ecat.repository.ProductFamilyRepository;
 import com.itensis.ecat.repository.ProductImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collector;
@@ -31,7 +33,12 @@ public class ProductConverter {
 				product.getPrice(),
 				product.getCreationDate(),
 				product.getProductFamily().getId(),
-				productImageRepository.findAllByProductId(product.getId()).stream().map(productImageConverter::toDto).collect(Collectors.toList())
+				productImageRepository.
+						findAllByProductId(product.getId())
+						.stream()
+						.map(productImageConverter::toDto)
+						.sorted(Comparator.comparing(ReturnProductImageDto::getIndex))
+						.collect(Collectors.toList())
 
 		);
 	}

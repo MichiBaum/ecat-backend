@@ -2,11 +2,13 @@ package com.itensis.ecat.converter;
 
 import com.itensis.ecat.domain.Promotion;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
+import com.itensis.ecat.dtos.ReturnPromotionImageDto;
 import com.itensis.ecat.dtos.SavePromotionDto;
 import com.itensis.ecat.repository.PromotionImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -24,7 +26,12 @@ public class PromotionConverter {
 				promotion.getDescription(),
 				promotion.getStartDate(),
 				promotion.getEndDate(),
-				promotionImageRepository.findAllByPromotionId(promotion.getId()).stream().map(promotionImageConverter::toDto).collect(Collectors.toList())
+				promotionImageRepository
+						.findAllByPromotionId(promotion.getId())
+						.stream()
+						.map(promotionImageConverter::toDto)
+						.sorted(Comparator.comparing(ReturnPromotionImageDto::getIndex))
+						.collect(Collectors.toList())
 		);
 	}
 
