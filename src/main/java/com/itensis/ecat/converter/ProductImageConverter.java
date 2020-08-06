@@ -19,7 +19,7 @@ public class ProductImageConverter {
                 saveProductImageDto.getFileName(),
                 0L,
                 saveProductImageDto.getIndex(),
-                productService.get(saveProductImageDto.getProductId()).get()
+                productService.get(saveProductImageDto.getProductId()).orElse(null)
         );
     }
 

@@ -15,9 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,9 +50,12 @@ public class ProductImageRestController {
     @PreAuthorize("hasAuthority('ADMINISTRATE')")
     @ApiOperation(value = "SAVE a new product image")
     @RequestMapping(value = "/api/products/image", method = RequestMethod.POST)
-    public ResponseEntity saveProductImage(@ModelAttribute @Valid SaveProductImageDto saveProductImageDto) throws IOException {
-        ProductImage productImageToReturn;
-        productImageToReturn = productImageService.saveProductImageWithImage(productImageConverter.toEntity(saveProductImageDto), saveProductImageDto.getFile());
+    public ResponseEntity saveProductImage(@ModelAttribute @Valid SaveProductImageDto saveProductImageDto) {
+        ProductImage productImageToReturn  = productImageConverter.toEntity(saveProductImageDto);
+        if(productImageToReturn.getProduct() == null){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        productImageToReturn = productImageService.saveProductImageWithImage(productImageToReturn, saveProductImageDto.getFile());
         return new ResponseEntity(productImageConverter.toDto(productImageToReturn), HttpStatus.OK);
     }
 

@@ -52,8 +52,11 @@ public class PromotionImageRestController {
     @ApiOperation(value = "UPDATE imagepath for promotion with specific ID")
     @RequestMapping(value = "/api/promotions/image", method = RequestMethod.POST)
     public ResponseEntity savePromotionImage(@ModelAttribute @Valid SavePromotionImageDto savePromotionImageDto){
-        PromotionImage promotionImageToReturn;
-        promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageConverter.toEntity(savePromotionImageDto), savePromotionImageDto.getFile());
+        PromotionImage promotionImageToReturn = promotionImageConverter.toEntity(savePromotionImageDto);
+        if(promotionImageToReturn.getPromotion() == null){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        promotionImageToReturn = promotionImageService.savePromotionImageWithImage(promotionImageToReturn, savePromotionImageDto.getFile());
         return new ResponseEntity(promotionImageConverter.toDto(promotionImageToReturn), HttpStatus.OK);
     }
 

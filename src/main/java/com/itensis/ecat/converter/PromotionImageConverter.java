@@ -20,7 +20,7 @@ public class PromotionImageConverter {
                 savepromotionImageDto.getFileName(),
                 0L,
                 savepromotionImageDto.getIndex(),
-                promotionService.get(savepromotionImageDto.getPromotionId()).get()
+                promotionService.get(savepromotionImageDto.getPromotionId()).orElse(null)
         );
     }
 
