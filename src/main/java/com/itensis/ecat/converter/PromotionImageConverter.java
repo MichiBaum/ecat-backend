@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 public class PromotionImageConverter {
 
     private final PromotionService promotionService;
-    private final PromotionImageService promotionImageService;
 
     public PromotionImage toEntity(SavePromotionImageDto savepromotionImageDto){
         return new PromotionImage(
