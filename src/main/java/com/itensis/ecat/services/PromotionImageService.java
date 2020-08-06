@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -47,7 +48,10 @@ public class PromotionImageService {
             this.promotionImageRepository.saveAndFlush(promotionImage);
             promotionImage.setImageId(promotionImage.getId());
             this.promotionImageRepository.saveAndFlush(promotionImage);
-            image.transferTo(new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId()));
+            File originalFile = new File(environment.getRequiredProperty("promotion.image.path") + promotionImage.getImageId());
+            File resizedFile = new File(environment.getRequiredProperty("promotion.resizedImage.path") + promotionImage.getImageId());
+            image.transferTo(originalFile);
+            Files.copy(originalFile.toPath(), resizedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             resizeImage(promotionImage.getImageId());
         }catch (IOException e){
             throw new RuntimeException(e.getMessage());
@@ -56,7 +60,7 @@ public class PromotionImageService {
     }
 
     public byte[] getImageBytes(Long imageId){
-        File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
+        File file = new File(environment.getRequiredProperty("promotion.resizedImage.path") + imageId);
         byte[] imageBytes;
         try{
             imageBytes = Files.readAllBytes(file.toPath());
@@ -68,7 +72,7 @@ public class PromotionImageService {
     }
 
     public String getImageMimeType(Long imageId){
-        File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
+        File file = new File(environment.getRequiredProperty("promotion.resizedImage.path") + imageId);
         String mimeType;
         try {
             URLConnection urlConnection = file.toURI().toURL().openConnection();
@@ -83,7 +87,7 @@ public class PromotionImageService {
     private void resizeImage(Long imageId){
         try{
             String mimeType = getImageMimeType(imageId);
-            File file = new File(environment.getRequiredProperty("promotion.image.path") + imageId);
+            File file = new File(environment.getRequiredProperty("promotion.resizedImage.path") + imageId);
             BufferedImage bufferedImage = ImageIO.read(file);
             double aspectRatio = 4D/3D;
             int croppedHeight = bufferedImage.getHeight();

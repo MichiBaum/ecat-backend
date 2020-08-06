@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
@@ -45,7 +46,10 @@ public class ProductImageService {
             productImageRepository.saveAndFlush(productImage);
             productImage.setImageId(productImage.getId());
             productImageRepository.saveAndFlush(productImage);
-            image.transferTo(new File(environment.getRequiredProperty("product.image.path") + productImage.getImageId()));
+            File originalFile = new File(environment.getRequiredProperty("product.image.path") + productImage.getImageId());
+            File resizedFile = new File(environment.getRequiredProperty("product.resizedImage.path") + productImage.getImageId());
+            image.transferTo(originalFile);
+            Files.copy(originalFile.toPath(), resizedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             resizeImage(productImage.getImageId());
         }catch (IOException e){
             throw new RuntimeException(e.getMessage());
@@ -54,7 +58,7 @@ public class ProductImageService {
     }
 
     public byte[] getImageBytes(Long imageId){
-        File file = new File(environment.getRequiredProperty("product.image.path") + imageId);
+        File file = new File(environment.getRequiredProperty("product.resizedImage.path") + imageId);
         byte[] imageBytes;
         try{
            imageBytes = Files.readAllBytes(file.toPath());
@@ -65,7 +69,7 @@ public class ProductImageService {
     }
 
     public String getImageMimeType(Long imageId){
-        File file = new File(environment.getRequiredProperty("product.image.path") + imageId);
+        File file = new File(environment.getRequiredProperty("product.resizedImage.path") + imageId);
         String mimeType;
         try {
             URLConnection urlConnection = file.toURI().toURL().openConnection();
@@ -79,7 +83,7 @@ public class ProductImageService {
     private void resizeImage(Long imageId){
         try{
             String mimeType = getImageMimeType(imageId);
-            File file = new File(environment.getRequiredProperty("product.image.path") + imageId);
+            File file = new File(environment.getRequiredProperty("product.resizedImage.path") + imageId);
             BufferedImage bufferedImage = ImageIO.read(file);
             double aspectRatio = 4D/3D;
             int croppedHeight = bufferedImage.getHeight();
