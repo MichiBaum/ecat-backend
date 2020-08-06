@@ -81,14 +81,11 @@ public class ProductImageService {
             String mimeType = getImageMimeType(imageId);
             File file = new File(environment.getRequiredProperty("product.image.path") + imageId);
             BufferedImage bufferedImage = ImageIO.read(file);
-            int croppedHeight;
-            int croppedWidth;
             double aspectRatio = 4D/3D;
+            int croppedHeight = bufferedImage.getHeight();
+            int croppedWidth = (int) Math.round(bufferedImage.getHeight() * aspectRatio);
 
-            if(bufferedImage.getWidth() > bufferedImage.getHeight()){
-                croppedHeight = bufferedImage.getHeight();
-                croppedWidth = (int) Math.round(bufferedImage.getHeight() * aspectRatio);
-            }else{
+            if(croppedWidth > bufferedImage.getWidth()){
                 croppedHeight = (int) Math.round(bufferedImage.getWidth() / aspectRatio);
                 croppedWidth = bufferedImage.getWidth();
             }
