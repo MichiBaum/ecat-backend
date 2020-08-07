@@ -63,7 +63,7 @@ public class PromotionRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@PreAuthorize("hasAuthority('ADMINISTRATE_PROMOTIONS')")
 	@ApiOperation(value = "DELETE the Promotion with the specific ID")
 	@RequestMapping(value = "/api/promotions/{id}", method = RequestMethod.DELETE)
 	public void deletePromotion(@PathVariable(value = "id") Promotion promotion){
@@ -71,7 +71,7 @@ public class PromotionRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@PreAuthorize("hasAuthority('ADMINISTRATE_PROMOTIONS')")
 	@ApiOperation(value = "Update or create a Promotion")
 	@RequestMapping(value = "/api/promotions/save", method = RequestMethod.POST)
 	public ResponseEntity savePromotion(@RequestBody @Valid SavePromotionDto savePromotionDto){

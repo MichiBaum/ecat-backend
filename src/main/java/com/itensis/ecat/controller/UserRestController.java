@@ -36,7 +36,7 @@ public class UserRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
+	@PreAuthorize("hasAuthority('ADMINISTRATE_USERS')")
 	@ApiOperation(value = "GET all Users")
 	@RequestMapping(value = "/api/users", method = RequestMethod.GET)
 	public List<ReturnUserDto> getUsers(){
@@ -46,7 +46,7 @@ public class UserRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAnyAuthority('ADMINISTRATE', 'ADMINISTRATE_ADMINS')")
+	@PreAuthorize("hasAnyAuthority('ADMINISTRATE_OWN_USER', 'ADMINISTRATE_USERS')")
 	@ApiOperation(value = "GET currently logged in user")
 	@RequestMapping(value = "/api/user", method = RequestMethod.GET)
 	public ResponseEntity getUser(Principal principal){
@@ -58,7 +58,7 @@ public class UserRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
+	@PreAuthorize("hasAuthority('ADMINISTRATE_USERS')")
 	@ApiOperation(value = "DELETE the user with the specific ID")
 	@RequestMapping(value = "/api/users/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity deleteUser(@PathVariable(value = "id") User user, Principal principal){
@@ -74,7 +74,7 @@ public class UserRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAnyAuthority('ADMINISTRATE', 'ADMINISTRATE_ADMINS')")
+	@PreAuthorize("hasAnyAuthority('ADMINISTRATE_OWN_USER', 'ADMINISTRATE_USERS')")
 	@ApiOperation(value = "Update or create a User")
 	@RequestMapping(value = "/api/users/save", method = RequestMethod.POST)
 	public ResponseEntity saveUser(@RequestBody @Valid SaveUserDto saveUserDto, Principal principal){

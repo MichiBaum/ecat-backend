@@ -61,7 +61,7 @@ public class UserService {
 	}
 
 	public UserValidationResult validate(SaveUserDto saveUserDto, User currentlyLoggedUser) {
-		boolean currentUserCanAdministrateAdmins = currentlyLoggedUser.hasPermission(PermissionName.ADMINISTRATE_ADMINS);
+		boolean currentUserCanAdministrateAdmins = currentlyLoggedUser.hasPermission(PermissionName.ADMINISTRATE_USERS);
 		boolean isNewUser = saveUserDto.getId() == null || saveUserDto.getId() == 0;
 		boolean isOwnDtoUser = !isNewUser && saveUserDto.getId().equals(currentlyLoggedUser.getId());
 		boolean permissionsNotChanged = usersPermissionNotChanged(saveUserDto, currentlyLoggedUser);

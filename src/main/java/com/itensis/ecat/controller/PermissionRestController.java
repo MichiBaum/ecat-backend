@@ -24,7 +24,7 @@ public class PermissionRestController {
     private final PermissionConverter permissionConverter;
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE_ADMINS')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_USERS')")
     @ApiOperation(value = "GET all Users")
     @RequestMapping(value = "/api/permissions", method = RequestMethod.GET)
     public List<ReturnPermissionDto> getUsers(){

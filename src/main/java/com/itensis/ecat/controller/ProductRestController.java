@@ -50,7 +50,7 @@ public class ProductRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
 	@ApiOperation(value = "DELETE the Product with the specific ID")
 	@RequestMapping(value = "/api/products/{id}", method = RequestMethod.DELETE)
 	public void deleteProduct(@PathVariable(value = "id") Product product){
@@ -73,7 +73,7 @@ public class ProductRestController {
 	}
 
 	@CrossOrigin
-	@PreAuthorize("hasAuthority('ADMINISTRATE')")
+	@PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
 	@ApiOperation(value = "Update or create a Product")
 	@RequestMapping(value = "/api/products/save", method = RequestMethod.POST)
 	public ResponseEntity saveProduct(@RequestBody @Valid SaveProductDto saveProductDto){

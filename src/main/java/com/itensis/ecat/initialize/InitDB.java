@@ -68,9 +68,11 @@ public class InitDB {
 	}
 
 	private List<Permission> initPermissions() {
-		Permission permission1 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE));
-		Permission permission2 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE_ADMINS));
-		return List.of(permission1, permission2);
+		Permission permission1 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE_PRODUCTS));
+		Permission permission2 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE_PROMOTIONS));
+		Permission permission3 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE_OWN_USER));
+		Permission permission4 = permissionRepository.saveAndFlush(new Permission(PermissionName.ADMINISTRATE_USERS));
+		return List.of(permission1, permission2, permission3, permission4);
 	}
 
 }

@@ -32,7 +32,7 @@ public class ProductImageRestController {
     }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
     @ApiOperation(value = "UPDATE index of existing product image")
     @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
     public void updateProductImageIndex(@PathVariable(value = "id") ProductImage productImage, @RequestBody Long index){
@@ -41,13 +41,13 @@ public class ProductImageRestController {
     }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
     @ApiOperation(value = "DELETE product image with specific ID")
     @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.DELETE)
     public void deleteProductImage(@PathVariable(value = "id") ProductImage productImage){ productImageService.deleteProductImage(productImage); }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
     @ApiOperation(value = "SAVE a new product image")
     @RequestMapping(value = "/api/products/image", method = RequestMethod.POST)
     public ResponseEntity saveProductImage(@ModelAttribute @Valid SaveProductImageDto saveProductImageDto) {

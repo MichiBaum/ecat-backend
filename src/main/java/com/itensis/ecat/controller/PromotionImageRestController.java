@@ -32,7 +32,7 @@ public class PromotionImageRestController {
     }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_PROMOTIONS')")
     @ApiOperation(value = "UPDATE index of existing promotion image")
     @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.POST)
     public void updateProductImageIndex(@PathVariable(value = "id") PromotionImage promotionImage, @RequestBody Long index){
@@ -41,13 +41,13 @@ public class PromotionImageRestController {
     }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_PROMOTIONS')")
     @ApiOperation(value = "DELETE promotion image with specific ID")
     @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.DELETE)
     public void deleteProductImage(@PathVariable(value = "id") PromotionImage promotionImage){ promotionImageService.deletePromotionImage(promotionImage); }
 
     @CrossOrigin
-    @PreAuthorize("hasAuthority('ADMINISTRATE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATE_PROMOTIONS')")
     @ApiOperation(value = "UPDATE imagepath for promotion with specific ID")
     @RequestMapping(value = "/api/promotions/image", method = RequestMethod.POST)
     public ResponseEntity savePromotionImage(@ModelAttribute @Valid SavePromotionImageDto savePromotionImageDto){
