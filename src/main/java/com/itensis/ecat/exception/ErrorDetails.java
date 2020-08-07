@@ -3,8 +3,7 @@ package com.itensis.ecat.exception;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import org.springframework.context.annotation.Profile;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +11,5 @@ import java.util.Date;
 public class ErrorDetails {
     private Long timestamp;
     private String message;
-    private java.lang.Class<? extends java.lang.Exception> exceptionClass;
     private String details;
 }
