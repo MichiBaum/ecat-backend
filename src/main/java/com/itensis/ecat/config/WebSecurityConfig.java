@@ -30,7 +30,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final UserDetailsServiceImpl userDetailsService;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final UserRepository userRepository;
 	private final List<PublicEndpointDetails> publicEndpoints;
 
 	@Value("${swagger2.enabled}")
@@ -49,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(antEndpoints.toArray(new String[antEndpoints.size()])).permitAll()
 				.anyRequest().authenticated()
 				.and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager(), userRepository, bCryptPasswordEncoder))
+				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 				.addFilter(new JWTAuthorizationFilter(authenticationManager(), userDetailsService))
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

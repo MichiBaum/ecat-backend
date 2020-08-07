@@ -3,6 +3,7 @@ package com.itensis.ecat.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itensis.ecat.exception.ErrorDetails;
 import com.itensis.ecat.repository.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,14 +26,10 @@ import java.util.stream.Collectors;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
-	private final UserRepository userRepository;
-	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager) {
 		super();
 		this.authenticationManager = authenticationManager;
-		this.userRepository = userRepository;
-		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.setFilterProcessesUrl("/api/login");
 	}
 
@@ -76,6 +73,14 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader("Content-Type", "application/json");
 		response.getWriter().write(new ObjectMapper().writeValueAsString(jwt));
 		response.getWriter().flush();
+		response.getWriter().close();
+	}
+
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)throws IOException{
+		ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), "errors.login.wrongCredentials", request.getPathInfo());
+		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		response.getWriter().write(new ObjectMapper().writeValueAsString(errorDetails));
 		response.getWriter().close();
 	}
 
