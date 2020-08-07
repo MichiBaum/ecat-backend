@@ -4,25 +4,25 @@ import com.itensis.ecat.annotation.Character;
 import com.itensis.ecat.annotation.Numerus;
 import com.itensis.ecat.annotation.PublicEndpoint;
 import com.itensis.ecat.converter.PromotionConverter;
+import com.itensis.ecat.domain.PermissionName;
 import com.itensis.ecat.domain.Promotion;
+import com.itensis.ecat.domain.User;
 import com.itensis.ecat.dtos.ReturnPromotionDto;
 import com.itensis.ecat.dtos.SavePromotionDto;
-import com.itensis.ecat.services.ProductImageService;
 import com.itensis.ecat.services.PromotionService;
+import com.itensis.ecat.services.UserService;
 import com.itensis.ecat.validator.PromotionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,10 +34,7 @@ public class PromotionRestController {
 	private final PromotionService promotionService;
 	private final PromotionConverter promotionConverter;
 	private final PromotionValidator promotionValidator;
-	private final ProductImageService productImageService;
-
-	@Resource
-	private Environment environment;
+	private final UserService userService;
 
 	@InitBinder("savePromotionDto")
 	public void initSavePromotionBinder(WebDataBinder binder) {
@@ -48,8 +45,16 @@ public class PromotionRestController {
 	@PublicEndpoint
 	@ApiOperation(value = "GET all Promotions")
 	@RequestMapping(value = "/api/promotions", method = RequestMethod.GET)
-	public List<ReturnPromotionDto> getAllPromotions(){
-		return promotionService.getAll().stream()
+	public List<ReturnPromotionDto> getAllPromotions(Principal principal){
+		if(principal != null){
+			Optional<User> optUser = userService.get(principal.getName());
+			if(optUser.isPresent() && optUser.get().hasPermission(PermissionName.ADMINISTRATE_PROMOTIONS)){
+				return promotionService.getAll().stream()
+						.map(promotionConverter::toDto)
+						.collect(Collectors.toList());
+			}
+		}
+		return promotionService.getAllNonExpired().stream()
 				.map(promotionConverter::toDto)
 				.collect(Collectors.toList());
 	}

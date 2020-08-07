@@ -7,8 +7,10 @@ import com.itensis.ecat.repository.PromotionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,15 @@ public class PromotionService {
 
 	public List<Promotion> getAll() {
 		return promotionRepository.findAll();
+	}
+
+	public List<Promotion> getAllNonExpired() {
+		List<Promotion> promotions = promotionRepository.findAll();
+		Date now = new Date();
+		return promotions
+				.stream()
+				.filter(promotion -> promotion.getEndDate() > now.getTime())
+				.collect(Collectors.toList());
 	}
 
 	public void delete(Promotion promotion) {
