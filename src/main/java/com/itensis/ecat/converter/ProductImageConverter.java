@@ -5,11 +5,17 @@ import com.itensis.ecat.dtos.ReturnProductImageDto;
 import com.itensis.ecat.dtos.SaveProductImageDto;
 import com.itensis.ecat.services.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 @RequiredArgsConstructor
 public class ProductImageConverter {
+
+    @Resource
+    private final Environment environment;
 
     private final ProductService productService;
 
@@ -27,7 +33,7 @@ public class ProductImageConverter {
                 productImage.getId(),
                 productImage.getImageName(),
                 productImage.getImageIndex(),
-                "http://localhost:8080/api/products/image/" + productImage.getImageId()
+                environment.getRequiredProperty("server.url") + "/api/products/image/" + productImage.getImageId()
         );
     }
 }

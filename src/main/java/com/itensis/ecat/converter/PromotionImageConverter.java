@@ -3,14 +3,19 @@ package com.itensis.ecat.converter;
 import com.itensis.ecat.domain.PromotionImage;
 import com.itensis.ecat.dtos.ReturnPromotionImageDto;
 import com.itensis.ecat.dtos.SavePromotionImageDto;
-import com.itensis.ecat.services.PromotionImageService;
 import com.itensis.ecat.services.PromotionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 @Component
 @RequiredArgsConstructor
 public class PromotionImageConverter {
+
+    @Resource
+    private final Environment environment;
 
     private final PromotionService promotionService;
 
@@ -28,7 +33,7 @@ public class PromotionImageConverter {
                 promotionImage.getId(),
                 promotionImage.getImageName(),
                 promotionImage.getImageIndex(),
-                "http://localhost:8080/api/promotions/image/" + promotionImage.getImageId()
+                environment.getRequiredProperty("server.url") + "/api/promotions/image/" + promotionImage.getImageId()
         );
     }
 }
