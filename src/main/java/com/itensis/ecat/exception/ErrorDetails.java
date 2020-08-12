@@ -3,7 +3,9 @@ package com.itensis.ecat.exception;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Profile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -11,5 +13,21 @@ import org.springframework.context.annotation.Profile;
 public class ErrorDetails {
     private Long timestamp;
     private String message;
-    private String details;
+    private List<String> details;
+
+    public ErrorDetails(Long timestamp,
+                        String message,
+                        Class<? extends java.lang.Exception> exceptionClass,
+                        String details,
+                        boolean sendExceptionClass){
+        this.timestamp = timestamp;
+        this.message = message;
+        this.details = new ArrayList<>();
+        if(sendExceptionClass){
+            this.details.add(details);
+            this.details.add(exceptionClass.toString());
+        }else{
+            this.details.add(details);
+        }
+    }
 }

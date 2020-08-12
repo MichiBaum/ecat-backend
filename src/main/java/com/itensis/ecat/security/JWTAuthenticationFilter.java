@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itensis.ecat.exception.ErrorDetails;
 import com.itensis.ecat.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +25,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
+	@Value("${errors.exceptionClass.send}")
+	private boolean sendExceptionClass;
 
 	private final AuthenticationManager authenticationManager;
 
@@ -78,7 +82,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)throws IOException{
-		ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), "errors.login.wrongCredentials", request.getPathInfo());
+		ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), "errors.login.wrongCredentials", failed.getClass(), request.getPathInfo(), sendExceptionClass);
 		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		response.getWriter().write(new ObjectMapper().writeValueAsString(errorDetails));
 		response.getWriter().close();
