@@ -43,7 +43,7 @@ public class ProductFamilyRestController {
 	@CrossOrigin
 	@PublicEndpoint //TODO why public
 	@ApiOperation(value = "Get all Product families")
-	@RequestMapping(value = "/api/productfamilies")
+	@RequestMapping(value = "/api/productfamilies", method = RequestMethod.GET)
 	public List<ReturnProductFamilyDto> getProductFamilies(){
 		return this.productFamilyService.getAll().stream().map(productFamilyConverter::toDto).collect(Collectors.toList());
 	}
