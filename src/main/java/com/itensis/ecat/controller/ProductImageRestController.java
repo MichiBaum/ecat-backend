@@ -9,6 +9,7 @@ import com.itensis.ecat.validator.ProductImageValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +63,7 @@ public class ProductImageRestController {
     @CrossOrigin
     @PublicEndpoint
     @ApiOperation(value = "GET image with specific id")
-    @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.GET, produces = {"image/jpeg", "image/png"})
+    @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.GET)
     public ResponseEntity getProductImage(@PathVariable(value = "id") ProductImage productImage){
         return provideFilePath(productImage.getImageId());
     }
@@ -70,7 +71,10 @@ public class ProductImageRestController {
     private ResponseEntity<byte[]> provideFilePath(Long imageId){
         byte[] media = productImageService.getImageBytes(imageId);
 
-        return new ResponseEntity<>(media, HttpStatus.OK);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Content-Type", productImageService.getImageMimeType(imageId));
+
+        return ResponseEntity.ok().headers(httpHeaders).body(media);
     }
 
 }

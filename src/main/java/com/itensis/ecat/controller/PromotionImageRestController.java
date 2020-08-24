@@ -9,6 +9,7 @@ import com.itensis.ecat.validator.PromotionImageValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -62,7 +63,7 @@ public class PromotionImageRestController {
     @CrossOrigin
     @PublicEndpoint
     @ApiOperation(value = "GET image with specific id")
-    @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.GET, produces = {"image/jpeg", "image/png"})
+    @RequestMapping(value = "/api/promotions/image/{id}", method = RequestMethod.GET)
     public ResponseEntity getPromotionImages(@PathVariable(value = "id") PromotionImage promotionImage){
         return provideFilePath(promotionImage.getImageId());
     }
@@ -70,6 +71,8 @@ public class PromotionImageRestController {
     private ResponseEntity<byte[]> provideFilePath(Long imageId){
         byte[] media = promotionImageService.getImageBytes(imageId);
 
-        return new ResponseEntity<>(media, HttpStatus.OK);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Content-Type", promotionImageService.getImageMimeType(imageId));
+        return ResponseEntity.ok().headers(httpHeaders).body(media);
     }
 }
