@@ -13,7 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "PRODUCT_IMAGE")
-public class ProductImage extends AbstractEntity{
+public class ProductImage extends AbstractEntity implements ImageInterface{
 
     @Column(nullable = false, name = "IMAGENAME")
     private String imageName;

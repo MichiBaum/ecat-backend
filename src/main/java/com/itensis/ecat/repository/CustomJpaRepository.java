@@ -6,7 +6,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import java.io.Serializable;
 
 @NoRepositoryBean
-interface CustomJpaRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface CustomJpaRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
 
 
 

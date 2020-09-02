@@ -38,14 +38,14 @@ public class ProductImageRestController {
     @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.POST)
     public void updateProductImageIndex(@PathVariable(value = "id") ProductImage productImage, @RequestBody Long index){
         productImage.setImageIndex(index);
-        productImageService.saveProductImage(productImage);
+        productImageService.saveImageObject(productImage);
     }
 
     @CrossOrigin
     @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
     @ApiOperation(value = "DELETE product image with specific ID")
     @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.DELETE)
-    public void deleteProductImage(@PathVariable(value = "id") ProductImage productImage){ productImageService.deleteProductImage(productImage); }
+    public void deleteProductImage(@PathVariable(value = "id") ProductImage productImage){ productImageService.saveImageObject(productImage); }
 
     @CrossOrigin
     @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
@@ -56,7 +56,7 @@ public class ProductImageRestController {
         if(productImageToReturn.getProduct() == null){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        productImageToReturn = productImageService.saveProductImageWithImage(productImageToReturn, saveProductImageDto.getFile());
+        productImageToReturn = productImageService.saveWithImage(productImageToReturn, saveProductImageDto.getFile());
         return new ResponseEntity(productImageConverter.toDto(productImageToReturn), HttpStatus.OK);
     }
 
