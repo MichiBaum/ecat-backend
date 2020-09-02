@@ -1,5 +1,6 @@
 package com.itensis.ecat.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @ControllerAdvice
 public class CustomExceptionHandler {
 
@@ -30,18 +32,21 @@ public class CustomExceptionHandler {
     @ExceptionHandler(Exception.class) //TODO maybe delete?
     public final ResponseEntity<ErrorDetails> handleException(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), "Internal Server Error", ex.getClass(), request.getDescription(false), sendExceptionClass);
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(RuntimeException.class)
     public final ResponseEntity<? extends ErrorDetails> handleRuntimeException(RuntimeException ex, WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), "Internal Server Error", ex.getClass(), request.getDescription(false), sendExceptionClass);
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public final ResponseEntity<? extends ErrorDetails> handleAccessDeniedException(AccessDeniedException ex, WebRequest request){
         ErrorDetails errorDetails = new ErrorDetails(new Date().getTime(), "Access Denied", ex.getClass(), request.getDescription(false), sendExceptionClass);
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorDetails, HttpStatus.FORBIDDEN);
     }
 
@@ -52,6 +57,7 @@ public class CustomExceptionHandler {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         ValidationErrorDetails errorDetails = new ValidationErrorDetails(new Date().getTime(), "Invalid Object Received", validationErrors, ex.getClass(), request.getDescription(false), sendExceptionClass);
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
@@ -62,6 +68,7 @@ public class CustomExceptionHandler {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         ValidationErrorDetails errorDetails = new ValidationErrorDetails(new Date().getTime(), "Invalid Object Received", validationErrors, ex.getClass(), request.getDescription(false), sendExceptionClass);
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 

@@ -17,14 +17,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.io.File;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
 @PropertySources({
-		@PropertySource("classpath:application.properties"),
+		@PropertySource("classpath:application.properties")
 })
 @Slf4j
 public class ECatApplication extends SpringBootServletInitializer {

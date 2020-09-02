@@ -3,7 +3,7 @@
     <!-- console appender to log into out stream -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <Pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{100} : %m in %M -> %n %ex{5} %n</Pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{100} : %m in %M -> %n %ex{5} %n</pattern>
         </encoder>
     </appender>
 
