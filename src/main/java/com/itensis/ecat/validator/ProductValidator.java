@@ -42,8 +42,12 @@ public class ProductValidator implements Validator {
             saveProductDto.setDescription("");
         }
 
-        if(saveProductDto.getArticleNr() == null ) {
+        if(saveProductDto.getArticleNr() == null || saveProductDto.getArticleNr().isBlank()) {
             errors.reject("product.articleNr.notSet");
+        }else{
+            if(saveProductDto.getArticleNr().length() > 18) {
+                errors.reject("product.articleNr.lengthLimit");
+            }
         }
 
         if(saveProductDto.getName() == null || saveProductDto.getName().isBlank()){
