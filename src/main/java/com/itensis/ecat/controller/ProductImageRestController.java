@@ -45,7 +45,7 @@ public class ProductImageRestController {
     @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
     @ApiOperation(value = "DELETE product image with specific ID")
     @RequestMapping(value = "/api/products/image/{id}", method = RequestMethod.DELETE)
-    public void deleteProductImage(@PathVariable(value = "id") ProductImage productImage){ productImageService.saveImageObject(productImage); }
+    public void deleteProductImage(@PathVariable(value = "id") ProductImage productImage){ productImageService.deleteImageObject(productImage); }
 
     @CrossOrigin
     @PreAuthorize("hasAuthority('ADMINISTRATE_PRODUCTS')")
